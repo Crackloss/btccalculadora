@@ -669,7 +669,8 @@ footer a:hover {
   .nav-link {
     text-align: center;
   }
-  .blog-card {
+}
+.blog-card {
   position: relative;
 }
 
@@ -685,5 +686,4 @@ footer a:hover {
 .blog-card:hover {
   border-color: var(--accent);
   cursor: pointer;
-}
 }
