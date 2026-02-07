@@ -1,0 +1,121 @@
+---
+layout: tool
+title: Conversor Bitcoin a Euros y Satoshis | Bitcoin Calculadora
+description: Convierte Bitcoin a Euros, Satoshis a Euros y viceversa. Conversor BTC/EUR en tiempo real con precio actualizado.
+keywords: conversor bitcoin euros, btc a eur, satoshis a euros, convertir bitcoin, calculadora btc
+canonical: /conversor/
+subtitle: Conversor BTC/EUR
+active_conversor: true
+extra_styles: |
+    .converter-grid { display: flex; flex-direction: column; gap: 24px; margin-bottom: 48px; }
+    .converter-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+    .converter-box.active { border-color: var(--accent); }
+    .converter-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+    .converter-input { display: flex; align-items: center; gap: 12px; }
+    .converter-input input { flex: 1; background: transparent; border: none; outline: none; font-family: 'Geist Mono', monospace; font-size: 1.75rem; font-weight: 500; color: var(--text); padding: 0; }
+    .converter-input input::placeholder { color: var(--text-secondary); }
+    .converter-input .unit { font-size: 1rem; color: var(--text-secondary); font-weight: 500; }
+    .swap-btn { align-self: center; width: 48px; height: 48px; background: var(--surface); border: 1px solid var(--border); border-radius: 50%; color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease; margin: -12px 0; }
+    .swap-btn:hover { border-color: var(--accent); color: var(--accent); transform: rotate(180deg); }
+    .swap-btn svg { width: 20px; height: 20px; }
+extra_scripts: |
+  <script>
+    const inputEur = document.getElementById('input-eur');
+    const inputBtc = document.getElementById('input-btc');
+    const inputSats = document.getElementById('input-sats');
+    let activeInput = null;
+    function updateFromEur() {
+      const eur = parseFloat(inputEur.value) || 0;
+      const price = getBtcPrice();
+      if (!price) return;
+      const btc = eur / price;
+      const sats = Math.round(btc * 100000000);
+      inputBtc.value = btc ? btc.toFixed(8) : '';
+      inputSats.value = sats || '';
+    }
+    function updateFromBtc() {
+      const btc = parseFloat(inputBtc.value) || 0;
+      const price = getBtcPrice();
+      if (!price) return;
+      const eur = btc * price;
+      const sats = Math.round(btc * 100000000);
+      inputEur.value = eur ? eur.toFixed(2) : '';
+      inputSats.value = sats || '';
+    }
+    function updateFromSats() {
+      const sats = parseInt(inputSats.value) || 0;
+      const price = getBtcPrice();
+      if (!price) return;
+      const btc = sats / 100000000;
+      const eur = btc * price;
+      inputBtc.value = btc ? btc.toFixed(8) : '';
+      inputEur.value = eur ? eur.toFixed(2) : '';
+    }
+    function setActive(boxId) {
+      document.querySelectorAll('.converter-box').forEach(box => box.classList.remove('active'));
+      document.getElementById(boxId).classList.add('active');
+    }
+    inputEur.addEventListener('input', () => { activeInput = 'eur'; updateFromEur(); });
+    inputBtc.addEventListener('input', () => { activeInput = 'btc'; updateFromBtc(); });
+    inputSats.addEventListener('input', () => { activeInput = 'sats'; updateFromSats(); });
+    inputEur.addEventListener('focus', () => setActive('box-eur'));
+    inputBtc.addEventListener('focus', () => setActive('box-btc'));
+    inputSats.addEventListener('focus', () => setActive('box-sats'));
+    window.addEventListener('btcPriceUpdated', () => {
+      if (activeInput === 'eur') updateFromEur();
+      else if (activeInput === 'btc') updateFromBtc();
+      else if (activeInput === 'sats') updateFromSats();
+    });
+    initPriceUpdates();
+  </script>
+---
+
+    <div class="hero-text">
+      <h2>Convierte <span class="accent">Bitcoin, Euros y Satoshis</span></h2>
+      <p>Precio en tiempo real. Escribe en cualquier campo para convertir.</p>
+    </div>
+
+    <section class="converter-grid" aria-label="Conversor de divisas">
+      <div class="converter-box" id="box-eur">
+        <div class="converter-label">Euros</div>
+        <div class="converter-input">
+          <input type="number" id="input-eur" placeholder="0" step="any">
+          <span class="unit">EUR</span>
+        </div>
+      </div>
+      <button class="swap-btn" aria-label="Intercambiar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
+        </svg>
+      </button>
+      <div class="converter-box" id="box-btc">
+        <div class="converter-label">Bitcoin</div>
+        <div class="converter-input">
+          <input type="number" id="input-btc" placeholder="0" step="any">
+          <span class="unit">BTC</span>
+        </div>
+      </div>
+      <div class="converter-box" id="box-sats">
+        <div class="converter-label">Satoshis</div>
+        <div class="converter-input">
+          <input type="number" id="input-sats" placeholder="0" step="1">
+          <span class="unit">sats</span>
+        </div>
+      </div>
+    </section>
+
+{{>price-info}}
+
+    <section class="faq-section">
+      <h2>Información útil</h2>
+      <article class="faq-item">
+        <h3>¿Qué es un Satoshi?</h3>
+        <p>Un satoshi (sat) es la unidad más pequeña de Bitcoin. 1 BTC = 100,000,000 satoshis. Es como los céntimos para el euro, pero con más decimales.</p>
+      </article>
+      <article class="faq-item">
+        <h3>¿Por qué usar satoshis?</h3>
+        <p>Con el precio actual de Bitcoin, es más práctico hablar en satoshis para cantidades pequeñas. Decir "10,000 sats" es más intuitivo que "0.0001 BTC".</p>
+      </article>
+    </section>
+
+{{>footer}}

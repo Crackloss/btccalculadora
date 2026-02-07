@@ -1,0 +1,196 @@
+---
+layout: tool
+title: Tu Sueldo en Bitcoin - Calculadora de Ahorro en BTC | 2026
+description: Descubre cuántos satoshis vale tu sueldo y cuánto tendrías si hubieras ahorrado en Bitcoin. Calculadora gratuita con proyección de rentabilidad histórica.
+keywords: sueldo en bitcoin, calculadora bitcoin, convertir euros satoshis, DCA bitcoin, ahorrar en bitcoin, salario en BTC, calculadora satoshis
+canonical: /
+subtitle: Tu sueldo en Bitcoin
+active_sueldo: true
+og_title: Tu Sueldo en Bitcoin - ¿Cuánto dinero has dejado de ganar?
+og_description: Descubre cuántos satoshis vale tu sueldo y cuánto tendrías si hubieras ahorrado en Bitcoin desde hace años.
+schema: |
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Tu Sueldo en Bitcoin",
+    "description": "Calculadora para convertir tu sueldo a satoshis y proyectar cuánto tendrías ahorrando en Bitcoin",
+    "url": "https://bitcoincalculadora.com",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Cuántos satoshis vale mi sueldo?",
+        "acceptedAnswer": { "@type": "Answer", "text": "El valor en satoshis de tu sueldo depende del precio actual de Bitcoin. Usa nuestra calculadora para convertir tu salario mensual a satoshis en tiempo real." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué es el DCA en Bitcoin?",
+        "acceptedAnswer": { "@type": "Answer", "text": "DCA (Dollar Cost Averaging) es una estrategia de inversión que consiste en comprar Bitcoin de forma periódica con una cantidad fija, independientemente del precio. Esto reduce el impacto de la volatilidad." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cuánto porcentaje del sueldo debería ahorrar en Bitcoin?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Los expertos recomiendan invertir solo lo que estés dispuesto a perder. Un rango común es entre el 5% y el 15% del sueldo mensual, dependiendo de tu tolerancia al riesgo." }
+      }
+    ]
+  }
+  </script>
+extra_scripts: |
+  <script>
+    const ANNUAL_GROWTH_RATE = 0.50;
+    let projectionData = {};
+    function calculate() {
+      const salary = parseFloat(document.getElementById('salary').value) || 0;
+      const price = getBtcPrice();
+      if (!price || salary <= 0) {
+        document.getElementById('sats').textContent = '—';
+        document.getElementById('btc').textContent = '—';
+        return;
+      }
+      const btcAmount = eurToBtc(salary);
+      const sats = eurToSats(salary);
+      document.getElementById('sats').textContent = formatSats(sats);
+      document.getElementById('btc').textContent = formatBtc(btcAmount);
+      calculateProjection();
+    }
+    function calculateProjection() {
+      const salary = parseFloat(document.getElementById('salary').value) || 0;
+      const savingsPercent = parseInt(document.getElementById('savings').value);
+      const years = parseInt(document.getElementById('years').value);
+      const price = getBtcPrice();
+      if (!price || salary <= 0) return;
+      const monthlySavings = salary * (savingsPercent / 100);
+      const totalMonths = years * 12;
+      const totalInvested = monthlySavings * totalMonths;
+      const monthlyRate = Math.pow(1 + ANNUAL_GROWTH_RATE, 1/12) - 1;
+      let totalValue = 0;
+      for (let month = 0; month < totalMonths; month++) {
+        const monthsGrowing = totalMonths - month;
+        totalValue += monthlySavings * Math.pow(1 + monthlyRate, monthsGrowing);
+      }
+      const totalBtc = totalValue / price;
+      const totalSats = Math.round(totalBtc * 100000000);
+      const profit = totalValue - totalInvested;
+      const profitPercent = ((totalValue / totalInvested) - 1) * 100;
+      projectionData = { salary, savingsPercent, years, totalInvested, totalValue, totalSats, profitPercent };
+      document.getElementById('total-invested').textContent = formatEur(totalInvested);
+      document.getElementById('projection-total').textContent = formatEur(totalValue);
+      document.getElementById('projection-btc').textContent = `≈ ${formatBtc(totalBtc)}`;
+      document.getElementById('projection-sats').textContent = formatSatsFull(totalSats);
+      document.getElementById('projection-gain').textContent = `Beneficio total: +${formatEur(profit)} (+${profitPercent.toFixed(0)}%)`;
+    }
+    function shareResult() {
+      const { savingsPercent, years, totalValue, profitPercent } = projectionData;
+      const text = `Si hubiera ahorrado ${savingsPercent}% de mi sueldo en #Bitcoin hace ${years} años, hoy tendría ${formatEur(totalValue)} (+${profitPercent.toFixed(0)}%) 🤯\n\nCalcula el tuyo:`;
+      shareOnTwitter(text);
+    }
+    document.getElementById('salary').addEventListener('input', calculate);
+    document.getElementById('savings').addEventListener('input', (e) => {
+      document.getElementById('savings-value').textContent = e.target.value + '%';
+      e.target.setAttribute('aria-valuenow', e.target.value);
+      calculateProjection();
+    });
+    document.getElementById('years').addEventListener('input', (e) => {
+      const years = e.target.value;
+      document.getElementById('years-value').textContent = years + (years === '1' ? ' año' : ' años');
+      e.target.setAttribute('aria-valuenow', years);
+      calculateProjection();
+    });
+    document.getElementById('share-btn').addEventListener('click', shareResult);
+    window.addEventListener('btcPriceUpdated', calculate);
+    initPriceUpdates();
+  </script>
+---
+
+    <div class="hero-text">
+      <h2>¿Cuánto dinero has dejado de ganar por <span class="accent">no ahorrar en Bitcoin</span>?</h2>
+      <p>Convierte tu salario a satoshis y descubre tu proyección de ahorro.</p>
+    </div>
+
+    <section aria-label="Calculadora de conversión">
+      <div class="input-group">
+        <label class="input-label" for="salary">Tu sueldo mensual neto</label>
+        <div class="input-wrapper">
+          <span class="currency">€</span>
+          <input type="number" id="salary" placeholder="2000" value="2000" min="0" step="100" aria-describedby="salary-help">
+        </div>
+      </div>
+
+      <div class="results" role="region" aria-label="Resultados de conversión">
+        <div class="result-row">
+          <span class="result-label">Hoy equivale a</span>
+          <span class="result-value highlight" id="sats" aria-live="polite">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">En Bitcoin</span>
+          <span class="result-value" id="btc" aria-live="polite">—</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="projection" aria-label="Proyección de ahorro">
+      <h2 class="projection-header">Si hubieras empezado a ahorrar...</h2>
+      <div class="projection-controls">
+        <div class="control">
+          <div class="control-label">
+            <label for="years">Hace cuántos años</label>
+            <span class="control-value" id="years-value">5 años</span>
+          </div>
+          <input type="range" id="years" min="1" max="10" value="5">
+        </div>
+        <div class="control">
+          <div class="control-label">
+            <label for="savings">Ahorrando cada mes</label>
+            <span class="control-value" id="savings-value">10%</span>
+          </div>
+          <input type="range" id="savings" min="5" max="50" value="10" step="5">
+        </div>
+      </div>
+      <div class="projection-result" role="region" aria-label="Resultado de proyección">
+        <div class="projection-invested">Habrías invertido <span id="total-invested">—</span></div>
+        <div class="projection-label">Hoy tendrías...</div>
+        <div class="projection-amount" id="projection-total" aria-live="polite">—</div>
+        <div class="projection-btc" id="projection-btc">—</div>
+        <div class="projection-sats" id="projection-sats">—</div>
+        <div class="projection-gain" id="projection-gain" aria-live="polite">—</div>
+      </div>
+      <p class="projection-note">* Cálculo basado en la revalorización media histórica de Bitcoin (~50% anual). Rendimientos pasados no garantizan resultados futuros. Esto no es asesoramiento financiero.</p>
+    </section>
+
+    <section class="share-section" aria-label="Compartir resultados">
+      <button class="share-btn" id="share-btn" aria-label="Compartir en Twitter">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        Compartir mi resultado en X
+      </button>
+    </section>
+
+{{>affiliates}}
+
+{{>price-info}}
+
+    <section class="faq-section" aria-label="Preguntas frecuentes">
+      <h2>Preguntas frecuentes</h2>
+      <article class="faq-item">
+        <h3>¿Cuántos satoshis vale mi sueldo?</h3>
+        <p>El valor en satoshis de tu sueldo depende del precio actual de Bitcoin. Un satoshi es la unidad más pequeña de Bitcoin (0.00000001 BTC). Usa nuestra calculadora para convertir tu salario mensual a satoshis en tiempo real.</p>
+      </article>
+      <article class="faq-item">
+        <h3>¿Qué es el DCA en Bitcoin?</h3>
+        <p>DCA (Dollar Cost Averaging) es una estrategia de inversión que consiste en comprar Bitcoin de forma periódica con una cantidad fija, independientemente del precio. Esto reduce el impacto de la volatilidad y elimina el estrés de intentar "comprar en el momento perfecto".</p>
+      </article>
+      <article class="faq-item">
+        <h3>¿Qué porcentaje del sueldo debería ahorrar en Bitcoin?</h3>
+        <p>Los expertos recomiendan invertir solo lo que estés dispuesto a perder. Un rango común es entre el 5% y el 15% del sueldo mensual, dependiendo de tu situación financiera y tolerancia al riesgo. Nunca inviertas dinero que necesites a corto plazo.</p>
+      </article>
+    </section>
+
+{{>footer}}

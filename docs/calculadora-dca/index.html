@@ -16,19 +16,20 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://bitcoincalculadora.com/calculadora-dca/">
-  <meta property="og:title" content="Calculadora DCA Bitcoin - El poder del ahorro periódico">
-  <meta property="og:description" content="Simula tu estrategia DCA y descubre cuánto Bitcoin habrías acumulado invirtiendo periódicamente.">
-  <meta property="og:image" content="https://bitcoincalculadora.com/assets/og-image-dca.png">
+  <meta property="og:title" content="Calculadora DCA Bitcoin - El poder del ahorro periódico}}">
+  <meta property="og:description" content="Simula tu estrategia DCA y descubre cuánto Bitcoin habrías acumulado invirtiendo periódicamente.}}">
+  <meta property="og:image" content="https://bitcoincalculadora.com/assets/og-image.png">
   <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="Bitcoin Calculadora">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://bitcoincalculadora.com/calculadora-dca/">
-  <meta name="twitter:title" content="Calculadora DCA Bitcoin - El poder del ahorro periódico">
-  <meta name="twitter:description" content="Simula tu estrategia DCA y descubre cuánto Bitcoin habrías acumulado.">
-  <meta name="twitter:image" content="https://bitcoincalculadora.com/assets/og-image-dca.png">
+  <meta name="twitter:title" content="Calculadora DCA Bitcoin - El poder del ahorro periódico}}">
+  <meta name="twitter:description" content="Simula tu estrategia DCA y descubre cuánto Bitcoin habrías acumulado invirtiendo periódicamente.}}">
+  <meta name="twitter:image" content="https://bitcoincalculadora.com/assets/og-image.png">
 
-  <!-- Schema.org markup -->
+  
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -38,13 +39,10 @@
     "url": "https://bitcoincalculadora.com/calculadora-dca/",
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "Web",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "EUR"
-    }
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
   }
   </script>
+  
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23f7931a'/><text y='.9em' x='50%' text-anchor='middle' font-size='70' fill='white'>₿</text></svg>">
@@ -56,15 +54,17 @@
   
   <!-- Styles -->
   <link rel="stylesheet" href="/css/styles.css">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZSPP1PNLP1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-ZSPP1PNLP1');
-</script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZSPP1PNLP1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZSPP1PNLP1');
+  </script>
+
+
 </head>
 <body>
   <main class="container">
@@ -81,13 +81,14 @@
 
     <!-- Navegación entre calculadoras -->
     <nav class="nav-calculadoras" aria-label="Calculadoras disponibles">
-      <a href="/" class="nav-link">💰 Sueldo</a>
+      <a href="/" class="nav-link ">💰 Sueldo</a>
       <a href="/calculadora-dca/" class="nav-link active">📈 DCA</a>
-      <a href="/conversor/" class="nav-link">🔄 Conversor</a>
-      <a href="/blog/" class="nav-link">📝 Blog</a>
+      <a href="/conversor/" class="nav-link ">🔄 Conversor</a>
+      <a href="/blog/" class="nav-link ">📝 Blog</a>
     </nav>
 
-    <div class="hero-text">
+
+<div class="hero-text">
       <h2>Simula tu estrategia <span class="accent">DCA en Bitcoin</span></h2>
       <p>Descubre cuánto habrías acumulado invirtiendo una cantidad fija cada mes.</p>
     </div>
@@ -97,20 +98,12 @@
         <label class="input-label" for="monthly-amount">Cantidad mensual a invertir</label>
         <div class="input-wrapper">
           <span class="currency">€</span>
-          <input 
-            type="number" 
-            id="monthly-amount" 
-            placeholder="100" 
-            value="100"
-            min="10"
-            step="10"
-          >
+          <input type="number" id="monthly-amount" placeholder="100" value="100" min="10" step="10">
         </div>
       </div>
 
       <div class="projection">
         <h2 class="projection-header">Período de inversión</h2>
-        
         <div class="projection-controls">
           <div class="control">
             <div class="control-label">
@@ -120,91 +113,81 @@
             <input type="range" id="dca-years" min="1" max="10" value="5">
           </div>
         </div>
-
         <div class="projection-result">
-          <div class="projection-invested">
-            Total invertido: <span id="dca-total-invested">—</span>
-          </div>
+          <div class="projection-invested">Total invertido: <span id="dca-total-invested">—</span></div>
           <div class="projection-label">Valor estimado hoy...</div>
           <div class="projection-amount" id="dca-total-value">—</div>
           <div class="projection-btc" id="dca-btc">—</div>
           <div class="projection-sats" id="dca-sats">—</div>
           <div class="projection-gain" id="dca-gain">—</div>
         </div>
-
-        <p class="projection-note">
-          * Cálculo basado en la revalorización media histórica de Bitcoin (~50% anual). El DCA real tendría resultados diferentes al comprar a precios variables. Esto no es asesoramiento financiero.
-        </p>
+        <p class="projection-note">* Cálculo basado en la revalorización media histórica de Bitcoin (~50% anual). El DCA real tendría resultados diferentes al comprar a precios variables. Esto no es asesoramiento financiero.</p>
       </div>
     </section>
 
     <section class="share-section">
       <button class="share-btn" id="share-btn-dca">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         Compartir mi simulación en X
       </button>
     </section>
 
     <section class="cta-section" aria-label="Hardware wallets recomendados">
-  <p class="cta-label">Protege tus bitcoin con una hardware wallet</p>
-  <div class="cta-row">
-    <a href="https://trezor.io/?ref=bitcoincalculadora" target="_blank" rel="noopener sponsored" class="cta-link">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <rect x="5" y="11" width="14" height="10" rx="2"/>
-        <path d="M12 3a4 4 0 0 0-4 4v4h8V7a4 4 0 0 0-4-4z"/>
-      </svg>
-      Trezor
-    </a>
-    <a href="https://shop.ledger.com/?r=ab735c3bd51c" target="_blank" rel="noopener sponsored" class="cta-link">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <rect x="5" y="11" width="14" height="10" rx="2"/>
-        <path d="M12 3a4 4 0 0 0-4 4v4h8V7a4 4 0 0 0-4-4z"/>
-      </svg>
-      Ledger
-    </a>
-    <a href="https://bitbox.swiss/bitbox02/nova/?ref=kwktktar" target="_blank" rel="noopener sponsored" class="cta-link">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <rect x="5" y="11" width="14" height="10" rx="2"/>
-        <path d="M12 3a4 4 0 0 0-4 4v4h8V7a4 4 0 0 0-4-4z"/>
-      </svg>
-      BitBox
-    </a>
-  </div>
-  <div class="cta-row">
-    <a href="https://store.blockstream.com/collections/physical-storage" target="_blank" rel="noopener sponsored" class="cta-link">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <rect x="5" y="11" width="14" height="10" rx="2"/>
-        <path d="M12 3a4 4 0 0 0-4 4v4h8V7a4 4 0 0 0-4-4z"/>
-      </svg>
-      Blockstream
-    </a>
-  </div>
-</section>
+      <p class="cta-label">Protege tus bitcoin con una hardware wallet</p>
+      <div class="cta-row">
+        <a href="https://trezor.io/?ref=bitcoincalculadora" target="_blank" rel="noopener sponsored" class="cta-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="5" y="11" width="14" height="10" rx="2"/>
+            <path d="M12 3a4 4 0 0 0-4 4v4h8V7a4 4 0 0 0-4-4z"/>
+          </svg>
+          Trezor
+        </a>
+        <a href="https://shop.ledger.com/?r=ab735c3bd51c" target="_blank" rel="noopener sponsored" class="cta-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="5" y="11" width="14" height="10" rx="2"/>
+            <path d="M12 3a4 4 0 0 0-4 4v4h8V7a4 4 0 0 0-4-4z"/>
+          </svg>
+          Ledger
+        </a>
+        <a href="https://bitbox.swiss/bitbox02/nova/?ref=kwktktar" target="_blank" rel="noopener sponsored" class="cta-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="5" y="11" width="14" height="10" rx="2"/>
+            <path d="M12 3a4 4 0 0 0-4 4v4h8V7a4 4 0 0 0-4-4z"/>
+          </svg>
+          BitBox
+        </a>
+      </div>
+      <div class="cta-row">
+        <a href="https://store.blockstream.com/collections/physical-storage" target="_blank" rel="noopener sponsored" class="cta-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="5" y="11" width="14" height="10" rx="2"/>
+            <path d="M12 3a4 4 0 0 0-4 4v4h8V7a4 4 0 0 0-4-4z"/>
+          </svg>
+          Blockstream
+        </a>
+      </div>
+    </section>
+
 
     <div class="price-info">
       <div class="price-live">
-        <span class="price-dot loading" id="price-dot"></span>
+        <span class="price-dot loading" id="price-dot" aria-hidden="true"></span>
         <span>1 BTC = <span id="btc-price">cargando...</span></span>
       </div>
       <span class="api-source" id="api-source"></span>
     </div>
 
-    <!-- FAQ Section -->
+
     <section class="faq-section">
       <h2>Sobre la estrategia DCA</h2>
-      
       <article class="faq-item">
         <h3>¿Qué es el DCA (Dollar Cost Averaging)?</h3>
         <p>Es una estrategia que consiste en invertir una cantidad fija de dinero a intervalos regulares (semanal, mensual), sin importar el precio del activo. Esto promedia tu precio de compra y reduce el riesgo de comprar todo en un mal momento.</p>
       </article>
-      
       <article class="faq-item">
         <h3>¿Por qué funciona el DCA con Bitcoin?</h3>
         <p>Bitcoin es muy volátil a corto plazo pero históricamente ha tenido tendencia alcista a largo plazo. El DCA te permite acumular más BTC cuando el precio baja y menos cuando sube, resultando en un precio promedio favorable.</p>
       </article>
-      
       <article class="faq-item">
         <h3>¿Cuánto debería invertir con DCA?</h3>
         <p>Solo lo que puedas permitirte perder. Una regla común es destinar entre el 5% y el 15% de tus ahorros mensuales. Lo importante es la consistencia, no la cantidad.</p>
@@ -213,69 +196,58 @@
 
     <footer>
       <p>
-        Calculadora gratuita · <a href="#" id="refresh-price">Actualizar precio</a><br><br>
+        Calculadora gratuita · No almacenamos ningún dato<br>
+        Precios en tiempo real · <a href="#" id="refresh-price">Actualizar precio</a><br><br>
         © 2026 <a href="/">Bitcoin Calculadora</a> · Esto no es asesoramiento financiero
       </p>
     </footer>
+
+
   </main>
 
   <script src="/js/main.js"></script>
-  <script>
+
+<script>
     const ANNUAL_GROWTH_RATE = 0.50;
     let dcaData = {};
-
     function calculateDCA() {
       const monthlyAmount = parseFloat(document.getElementById('monthly-amount').value) || 0;
       const years = parseInt(document.getElementById('dca-years').value);
       const price = getBtcPrice();
-
       if (!price || monthlyAmount <= 0) return;
-
       const totalMonths = years * 12;
       const totalInvested = monthlyAmount * totalMonths;
-      
       const monthlyRate = Math.pow(1 + ANNUAL_GROWTH_RATE, 1/12) - 1;
-      
       let totalValue = 0;
       for (let month = 0; month < totalMonths; month++) {
-        const monthsGrowing = totalMonths - month;
-        totalValue += monthlyAmount * Math.pow(1 + monthlyRate, monthsGrowing);
+        totalValue += monthlyAmount * Math.pow(1 + monthlyRate, totalMonths - month);
       }
-      
       const totalBtc = totalValue / price;
       const totalSats = Math.round(totalBtc * 100000000);
       const profit = totalValue - totalInvested;
       const profitPercent = ((totalValue / totalInvested) - 1) * 100;
-
       dcaData = { monthlyAmount, years, totalInvested, totalValue, profitPercent };
-
       document.getElementById('dca-total-invested').textContent = formatEur(totalInvested);
       document.getElementById('dca-total-value').textContent = formatEur(totalValue);
       document.getElementById('dca-btc').textContent = `≈ ${formatBtc(totalBtc)}`;
       document.getElementById('dca-sats').textContent = formatSatsFull(totalSats);
       document.getElementById('dca-gain').textContent = `Beneficio: +${formatEur(profit)} (+${profitPercent.toFixed(0)}%)`;
     }
-
     function shareDCA() {
       const { monthlyAmount, years, totalValue, profitPercent } = dcaData;
-      const text = `Si hubiera invertido ${formatEur(monthlyAmount)}/mes en #Bitcoin durante ${years} años con DCA, hoy tendría ${formatEur(totalValue)} (+${profitPercent.toFixed(0)}%) 📈
-
-Simula tu estrategia:`;
+      const text = `Si hubiera invertido ${formatEur(monthlyAmount)}/mes en #Bitcoin durante ${years} años con DCA, hoy tendría ${formatEur(totalValue)} (+${profitPercent.toFixed(0)}%) 📈\n\nSimula tu estrategia:`;
       shareOnTwitter(text, 'https://bitcoincalculadora.com/calculadora-dca/');
     }
-
     document.getElementById('monthly-amount').addEventListener('input', calculateDCA);
-    
     document.getElementById('dca-years').addEventListener('input', (e) => {
       const years = e.target.value;
       document.getElementById('dca-years-value').textContent = years + (years === '1' ? ' año' : ' años');
       calculateDCA();
     });
-
     document.getElementById('share-btn-dca').addEventListener('click', shareDCA);
     window.addEventListener('btcPriceUpdated', calculateDCA);
-
     initPriceUpdates();
   </script>
+
 </body>
 </html>

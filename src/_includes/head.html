@@ -1,0 +1,51 @@
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Primary Meta Tags -->
+  <title>{{title}}</title>
+  <meta name="title" content="{{title}}">
+  <meta name="description" content="{{description}}">
+  {{#keywords}}<meta name="keywords" content="{{keywords}}">{{/keywords}}
+  <meta name="author" content="Bitcoin Calculadora">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://bitcoincalculadora.com{{canonical}}">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="{{og_type|website}}">
+  <meta property="og:url" content="https://bitcoincalculadora.com{{canonical}}">
+  <meta property="og:title" content="{{og_title|{{title}}}}">
+  <meta property="og:description" content="{{og_description|{{description}}}}">
+  <meta property="og:image" content="https://bitcoincalculadora.com/assets/og-image.png">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="Bitcoin Calculadora">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://bitcoincalculadora.com{{canonical}}">
+  <meta name="twitter:title" content="{{og_title|{{title}}}}">
+  <meta name="twitter:description" content="{{og_description|{{description}}}}">
+  <meta name="twitter:image" content="https://bitcoincalculadora.com/assets/og-image.png">
+
+  {{#schema}}
+  {{schema}}
+  {{/schema}}
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23f7931a'/><text y='.9em' x='50%' text-anchor='middle' font-size='70' fill='white'>₿</text></svg>">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/styles.css">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZSPP1PNLP1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZSPP1PNLP1');
+  </script>

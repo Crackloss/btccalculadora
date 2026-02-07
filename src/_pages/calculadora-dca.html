@@ -1,0 +1,132 @@
+---
+layout: tool
+title: Calculadora DCA Bitcoin - Simula tu estrategia de inversión | 2026
+description: Calcula cuánto Bitcoin habrías acumulado con una estrategia DCA. Simula inversiones periódicas y descubre el poder del Dollar Cost Averaging.
+keywords: calculadora DCA bitcoin, dollar cost averaging, invertir en bitcoin, estrategia DCA, comprar bitcoin periodicamente, ahorro bitcoin
+canonical: /calculadora-dca/
+subtitle: Calculadora DCA
+active_dca: true
+og_title: Calculadora DCA Bitcoin - El poder del ahorro periódico
+og_description: Simula tu estrategia DCA y descubre cuánto Bitcoin habrías acumulado invirtiendo periódicamente.
+schema: |
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Calculadora DCA Bitcoin",
+    "description": "Simula estrategias de Dollar Cost Averaging para invertir en Bitcoin",
+    "url": "https://bitcoincalculadora.com/calculadora-dca/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+  }
+  </script>
+extra_scripts: |
+  <script>
+    const ANNUAL_GROWTH_RATE = 0.50;
+    let dcaData = {};
+    function calculateDCA() {
+      const monthlyAmount = parseFloat(document.getElementById('monthly-amount').value) || 0;
+      const years = parseInt(document.getElementById('dca-years').value);
+      const price = getBtcPrice();
+      if (!price || monthlyAmount <= 0) return;
+      const totalMonths = years * 12;
+      const totalInvested = monthlyAmount * totalMonths;
+      const monthlyRate = Math.pow(1 + ANNUAL_GROWTH_RATE, 1/12) - 1;
+      let totalValue = 0;
+      for (let month = 0; month < totalMonths; month++) {
+        totalValue += monthlyAmount * Math.pow(1 + monthlyRate, totalMonths - month);
+      }
+      const totalBtc = totalValue / price;
+      const totalSats = Math.round(totalBtc * 100000000);
+      const profit = totalValue - totalInvested;
+      const profitPercent = ((totalValue / totalInvested) - 1) * 100;
+      dcaData = { monthlyAmount, years, totalInvested, totalValue, profitPercent };
+      document.getElementById('dca-total-invested').textContent = formatEur(totalInvested);
+      document.getElementById('dca-total-value').textContent = formatEur(totalValue);
+      document.getElementById('dca-btc').textContent = `≈ ${formatBtc(totalBtc)}`;
+      document.getElementById('dca-sats').textContent = formatSatsFull(totalSats);
+      document.getElementById('dca-gain').textContent = `Beneficio: +${formatEur(profit)} (+${profitPercent.toFixed(0)}%)`;
+    }
+    function shareDCA() {
+      const { monthlyAmount, years, totalValue, profitPercent } = dcaData;
+      const text = `Si hubiera invertido ${formatEur(monthlyAmount)}/mes en #Bitcoin durante ${years} años con DCA, hoy tendría ${formatEur(totalValue)} (+${profitPercent.toFixed(0)}%) 📈\n\nSimula tu estrategia:`;
+      shareOnTwitter(text, 'https://bitcoincalculadora.com/calculadora-dca/');
+    }
+    document.getElementById('monthly-amount').addEventListener('input', calculateDCA);
+    document.getElementById('dca-years').addEventListener('input', (e) => {
+      const years = e.target.value;
+      document.getElementById('dca-years-value').textContent = years + (years === '1' ? ' año' : ' años');
+      calculateDCA();
+    });
+    document.getElementById('share-btn-dca').addEventListener('click', shareDCA);
+    window.addEventListener('btcPriceUpdated', calculateDCA);
+    initPriceUpdates();
+  </script>
+---
+
+    <div class="hero-text">
+      <h2>Simula tu estrategia <span class="accent">DCA en Bitcoin</span></h2>
+      <p>Descubre cuánto habrías acumulado invirtiendo una cantidad fija cada mes.</p>
+    </div>
+
+    <section aria-label="Calculadora DCA">
+      <div class="input-group">
+        <label class="input-label" for="monthly-amount">Cantidad mensual a invertir</label>
+        <div class="input-wrapper">
+          <span class="currency">€</span>
+          <input type="number" id="monthly-amount" placeholder="100" value="100" min="10" step="10">
+        </div>
+      </div>
+
+      <div class="projection">
+        <h2 class="projection-header">Período de inversión</h2>
+        <div class="projection-controls">
+          <div class="control">
+            <div class="control-label">
+              <label for="dca-years">Duración</label>
+              <span class="control-value" id="dca-years-value">5 años</span>
+            </div>
+            <input type="range" id="dca-years" min="1" max="10" value="5">
+          </div>
+        </div>
+        <div class="projection-result">
+          <div class="projection-invested">Total invertido: <span id="dca-total-invested">—</span></div>
+          <div class="projection-label">Valor estimado hoy...</div>
+          <div class="projection-amount" id="dca-total-value">—</div>
+          <div class="projection-btc" id="dca-btc">—</div>
+          <div class="projection-sats" id="dca-sats">—</div>
+          <div class="projection-gain" id="dca-gain">—</div>
+        </div>
+        <p class="projection-note">* Cálculo basado en la revalorización media histórica de Bitcoin (~50% anual). El DCA real tendría resultados diferentes al comprar a precios variables. Esto no es asesoramiento financiero.</p>
+      </div>
+    </section>
+
+    <section class="share-section">
+      <button class="share-btn" id="share-btn-dca">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        Compartir mi simulación en X
+      </button>
+    </section>
+
+{{>affiliates}}
+
+{{>price-info}}
+
+    <section class="faq-section">
+      <h2>Sobre la estrategia DCA</h2>
+      <article class="faq-item">
+        <h3>¿Qué es el DCA (Dollar Cost Averaging)?</h3>
+        <p>Es una estrategia que consiste en invertir una cantidad fija de dinero a intervalos regulares (semanal, mensual), sin importar el precio del activo. Esto promedia tu precio de compra y reduce el riesgo de comprar todo en un mal momento.</p>
+      </article>
+      <article class="faq-item">
+        <h3>¿Por qué funciona el DCA con Bitcoin?</h3>
+        <p>Bitcoin es muy volátil a corto plazo pero históricamente ha tenido tendencia alcista a largo plazo. El DCA te permite acumular más BTC cuando el precio baja y menos cuando sube, resultando en un precio promedio favorable.</p>
+      </article>
+      <article class="faq-item">
+        <h3>¿Cuánto debería invertir con DCA?</h3>
+        <p>Solo lo que puedas permitirte perder. Una regla común es destinar entre el 5% y el 15% de tus ahorros mensuales. Lo importante es la consistencia, no la cantidad.</p>
+      </article>
+    </section>
+
+{{>footer}}

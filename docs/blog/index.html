@@ -4,32 +4,58 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
+  <!-- SEO Primary Meta Tags -->
   <title>Blog - Guías sobre Bitcoin y Ahorro | Bitcoin Calculadora</title>
+  <meta name="title" content="Blog - Guías sobre Bitcoin y Ahorro | Bitcoin Calculadora">
   <meta name="description" content="Aprende sobre Bitcoin, estrategias DCA, ahorro en criptomonedas y cómo empezar a invertir de forma segura.">
+  
+  <meta name="author" content="Bitcoin Calculadora">
+  <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://bitcoincalculadora.com/blog/">
   
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://bitcoincalculadora.com/blog/">
+  <meta property="og:title" content="Blog - Guías sobre Bitcoin y Ahorro | Bitcoin Calculadora">
+  <meta property="og:description" content="Aprende sobre Bitcoin, estrategias DCA, ahorro en criptomonedas y cómo empezar a invertir de forma segura.">
+  <meta property="og:image" content="https://bitcoincalculadora.com/assets/og-image.png">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="Bitcoin Calculadora">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://bitcoincalculadora.com/blog/">
+  <meta name="twitter:title" content="Blog - Guías sobre Bitcoin y Ahorro | Bitcoin Calculadora">
+  <meta name="twitter:description" content="Aprende sobre Bitcoin, estrategias DCA, ahorro en criptomonedas y cómo empezar a invertir de forma segura.">
+  <meta name="twitter:image" content="https://bitcoincalculadora.com/assets/og-image.png">
+
+  
+
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23f7931a'/><text y='.9em' x='50%' text-anchor='middle' font-size='70' fill='white'>₿</text></svg>">
   
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   
+  <!-- Styles -->
   <link rel="stylesheet" href="/css/styles.css">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZSPP1PNLP1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-ZSPP1PNLP1');
-</script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZSPP1PNLP1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZSPP1PNLP1');
+  </script>
+
 </head>
 <body>
   <main class="container">
     <header>
-      <svg class="btc-logo" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="btc-logo" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Logo Bitcoin">
         <circle cx="32" cy="32" r="32" fill="#f7931a"/>
         <path d="M45.5 28.4c.6-4-2.4-6.2-6.6-7.6l1.4-5.4-3.3-.8-1.3 5.3c-.9-.2-1.8-.4-2.7-.7l1.3-5.3-3.3-.8-1.4 5.4c-.7-.2-1.4-.3-2.1-.5l-4.5-1.1-.9 3.5s2.4.6 2.4.6c1.3.3 1.6 1.2 1.5 1.9l-1.5 6.2c.1 0 .2 0 .3.1-.1 0-.2-.1-.3-.1l-2.2 8.7c-.2.4-.6 1.1-1.6.8 0 0-2.4-.6-2.4-.6l-1.6 3.8 4.3 1.1c.8.2 1.6.4 2.3.6l-1.4 5.5 3.3.8 1.4-5.5c.9.2 1.8.5 2.7.7l-1.4 5.4 3.3.8 1.4-5.5c5.8 1.1 10.1.7 12-4.6 1.5-4.2-.1-6.7-3.1-8.3 2.2-.5 3.9-2 4.3-5zm-7.7 10.8c-1.1 4.2-8.2 1.9-10.5 1.4l1.9-7.5c2.3.6 9.8 1.7 8.6 6.1zm1.1-10.9c-1 3.9-6.9 1.9-8.8 1.4l1.7-6.8c1.9.5 8.2 1.4 7.1 5.4z" fill="white"/>
       </svg>
@@ -39,14 +65,16 @@
       </div>
     </header>
 
-    <nav class="nav-calculadoras">
-      <a href="/" class="nav-link">💰 Sueldo</a>
-      <a href="/calculadora-dca/" class="nav-link">📈 DCA</a>
-      <a href="/conversor/" class="nav-link">🔄 Conversor</a>
-      <a href="/blog/" class="nav-link">📝 Blog</a>
+    <!-- Navegación entre calculadoras -->
+    <nav class="nav-calculadoras" aria-label="Calculadoras disponibles">
+      <a href="/" class="nav-link ">💰 Sueldo</a>
+      <a href="/calculadora-dca/" class="nav-link ">📈 DCA</a>
+      <a href="/conversor/" class="nav-link ">🔄 Conversor</a>
+      <a href="/blog/" class="nav-link active">📝 Blog</a>
     </nav>
 
-    <div class="hero-text">
+
+<div class="hero-text">
       <h2>Aprende sobre <span class="accent">Bitcoin y ahorro</span></h2>
       <p>Guías prácticas para empezar a invertir de forma inteligente.</p>
     </div>
@@ -56,12 +84,10 @@
         <h3><a href="/blog/que-es-dca-bitcoin/">¿Qué es el DCA en Bitcoin? Guía completa</a></h3>
         <p>Descubre cómo la estrategia Dollar Cost Averaging puede ayudarte a invertir en Bitcoin sin estrés y reduciendo el riesgo de la volatilidad.</p>
       </article>
-      
       <article class="blog-card">
         <h3><a href="/blog/ahorrar-en-bitcoin-espana/">Cómo ahorrar en Bitcoin desde España</a></h3>
         <p>Guía práctica sobre las mejores formas de comprar y almacenar Bitcoin en España, incluyendo opciones sin KYC y hardware wallets.</p>
       </article>
-      
       <article class="blog-card">
         <h3><a href="/blog/cuanto-invertir-en-bitcoin/">¿Cuánto debería invertir en Bitcoin?</a></h3>
         <p>Criterios para decidir qué porcentaje de tus ahorros destinar a Bitcoin según tu situación financiera y tolerancia al riesgo.</p>
@@ -70,9 +96,11 @@
 
     <footer>
       <p>
+        
         © 2026 <a href="/">Bitcoin Calculadora</a> · Esto no es asesoramiento financiero
       </p>
     </footer>
+
   </main>
 </body>
 </html>
