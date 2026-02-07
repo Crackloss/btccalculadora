@@ -11,11 +11,11 @@
 
 :root {
   --bg: #1e1e1e;
-  --surface: #1e1e1e;
+  --surface: #141414;
   --surface-hover: #1e1e1e;
-  --border: #262626;
+  --border: #838080;
   --text: #fafafa;
-  --text-secondary: #737373;
+  --text-secondary: #b9b4b4;
   --accent: #f7931a;
   --accent-dim: rgba(247, 147, 26, 0.15);
   --green: #22c55e;
