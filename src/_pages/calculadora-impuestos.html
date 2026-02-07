@@ -1,0 +1,421 @@
+---
+layout: tool
+title: Calculadora de Impuestos Crypto España 2026 - IRPF Bitcoin | Tramos Actualizados
+description: Calcula cuánto pagarás a Hacienda por tus ganancias en Bitcoin y criptomonedas. Tramos IRPF 2025 actualizados, método FIFO, compensación de pérdidas. Gratis.
+keywords: impuestos criptomonedas españa, calculadora irpf bitcoin, impuestos bitcoin españa 2026, hacienda criptomonedas, ganancia patrimonial crypto, FIFO bitcoin
+canonical: /calculadora-impuestos/
+subtitle: Calculadora de impuestos crypto
+active_impuestos: true
+og_title: Calculadora de Impuestos Crypto España 2026 - ¿Cuánto pagas a Hacienda?
+og_description: Calcula tu carga fiscal por Bitcoin y criptomonedas en España. Tramos IRPF actualizados a 2025.
+schema: |
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Calculadora de Impuestos Crypto España",
+    "description": "Calcula el IRPF sobre ganancias patrimoniales de criptomonedas en España",
+    "url": "https://bitcoincalculadora.com/calculadora-impuestos/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Cuánto pago de impuestos por vender Bitcoin en España?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Las ganancias por venta de Bitcoin tributan en la base del ahorro del IRPF con tipos progresivos: 19% hasta 6.000€, 21% hasta 50.000€, 23% hasta 200.000€, 27% hasta 300.000€ y 30% a partir de 300.000€ (tramos vigentes desde enero 2025)." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué método se usa para calcular la ganancia en crypto en España?",
+        "acceptedAnswer": { "@type": "Answer", "text": "En España se aplica el método FIFO (First In, First Out). Esto significa que cuando vendes, el coste de adquisición se calcula usando el precio de la primera compra que hiciste, no la última." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Puedo compensar pérdidas en criptomonedas?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Sí. Puedes compensar pérdidas con ganancias patrimoniales del mismo año. Si quedan pérdidas pendientes, puedes compensar hasta un 25% de los rendimientos del capital mobiliario, y arrastrar las pérdidas no compensadas durante los 4 ejercicios fiscales siguientes." }
+      }
+    ]
+  }
+  </script>
+extra_styles: |
+  <style>
+    .legal-notice { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 32px; font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.6; }
+    .legal-notice strong { color: var(--accent); }
+    .tramos-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.875rem; }
+    .tramos-table th { text-align: left; padding: 10px 12px; background: var(--surface); color: var(--accent); border-bottom: 1px solid var(--border); font-weight: 500; }
+    .tramos-table td { padding: 10px 12px; border-bottom: 1px solid rgba(131,128,128,0.3); }
+    .tramos-table tr:last-child td { border-bottom: none; }
+    .tramos-table .highlight-row { background: var(--accent-dim); }
+    .tax-section { margin-bottom: 32px; }
+    .tax-section h3 { font-size: 1rem; font-weight: 500; margin-bottom: 12px; }
+    .operations-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+    .operation-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+    .operation-row .input-label { margin-bottom: 4px; }
+    .add-btn, .calc-btn { width: 100%; padding: 14px; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 0.9375rem; transition: opacity 0.2s; }
+    .add-btn { background: var(--surface); border: 1px dashed var(--border); color: var(--text-secondary); margin-bottom: 16px; }
+    .add-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .calc-btn { background: var(--accent); color: #000; }
+    .calc-btn:hover { opacity: 0.9; }
+    .remove-op { background: none; border: none; color: var(--red); cursor: pointer; font-size: 0.8125rem; padding: 4px 8px; float: right; }
+    .breakdown-item { display: flex; justify-content: space-between; padding: 8px 0; font-size: 0.875rem; border-bottom: 1px solid rgba(131,128,128,0.2); }
+    .breakdown-item:last-child { border-bottom: none; }
+    .total-tax { font-size: 1.25rem; font-weight: 600; color: var(--accent); }
+    .info-box { background: var(--green-dim); border: 1px solid rgba(34,197,94,0.3); border-radius: 8px; padding: 12px; font-size: 0.8125rem; color: var(--text-secondary); margin: 12px 0; }
+    .switch-mode { display: flex; gap: 0; margin-bottom: 24px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+    .switch-mode button { flex: 1; padding: 10px; background: var(--surface); border: none; color: var(--text-secondary); cursor: pointer; font-size: 0.875rem; transition: all 0.2s; }
+    .switch-mode button.active { background: var(--accent); color: #000; font-weight: 600; }
+    .error-msg { color: var(--red); font-size: 0.875rem; padding: 12px; background: rgba(239,68,68,0.1); border-radius: 8px; display: none; }
+    .positive { color: var(--green) !important; }
+    .negative { color: var(--red) !important; }
+    .loss-info { font-size: 0.8125rem; color: var(--text-secondary); margin-top: 8px; }
+  </style>
+extra_scripts: |
+  <script>
+    // =====================================================
+    // CALCULADORA DE IMPUESTOS CRYPTO - ESPAÑA 2025/2026
+    // =====================================================
+    // Marco legal vigente:
+    // - Ganancias patrimoniales por transmisión de crypto
+    //   tributan en la BASE DEL AHORRO del IRPF
+    // - Método de cálculo: FIFO (First In, First Out)
+    //   Art. 33-37 Ley IRPF
+    // - Tramos actualizados desde 1 enero 2025
+    //   (Ley 7/2024, BOE 21/12/2024)
+    // - Compensación de pérdidas: Art. 49 Ley IRPF
+    //
+    // NOTA: Esta herramienta es orientativa.
+    // No sustituye asesoramiento fiscal profesional.
+    // =====================================================
+
+    // Tramos base del ahorro IRPF 2025 (vigentes para declaración 2026)
+    // Fuente: Agencia Tributaria + Ley 7/2024
+    const TRAMOS_AHORRO_2025 = [
+      { hasta: 6000,   tipo: 0.19 },   // 19% primeros 6.000€
+      { hasta: 50000,  tipo: 0.21 },   // 21% de 6.000 a 50.000€
+      { hasta: 200000, tipo: 0.23 },   // 23% de 50.000 a 200.000€
+      { hasta: 300000, tipo: 0.27 },   // 27% de 200.000 a 300.000€
+      { hasta: Infinity, tipo: 0.30 }  // 30% a partir de 300.000€
+    ];
+
+    let mode = 'simple';
+    let operations = [];
+    let opCounter = 0;
+
+    // --- Mode switch ---
+    document.querySelectorAll('.switch-mode button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.switch-mode button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        mode = btn.dataset.mode;
+        document.getElementById('simple-mode').style.display = mode === 'simple' ? 'block' : 'none';
+        document.getElementById('advanced-mode').style.display = mode === 'advanced' ? 'block' : 'none';
+      });
+    });
+
+    // --- Simple mode ---
+    document.getElementById('calc-simple').addEventListener('click', () => {
+      const gain = parseFloat(document.getElementById('simple-gain').value);
+      const losses = parseFloat(document.getElementById('simple-losses').value) || 0;
+      if (isNaN(gain)) {
+        document.getElementById('simple-error').textContent = 'Introduce una ganancia válida.';
+        document.getElementById('simple-error').style.display = 'block';
+        return;
+      }
+      document.getElementById('simple-error').style.display = 'none';
+      const netGain = gain - Math.abs(losses);
+      displayResults(netGain, Math.abs(losses));
+    });
+
+    // --- Advanced mode: multiple operations ---
+    function addOperation() {
+      opCounter++;
+      const div = document.createElement('div');
+      div.className = 'operation-row';
+      div.id = `op-${opCounter}`;
+      div.innerHTML = `
+        <div>
+          <label class="input-label">Precio compra (€)</label>
+          <div class="input-wrapper" style="margin-bottom:0">
+            <input type="number" class="op-buy" placeholder="10.000" min="0" step="100">
+          </div>
+        </div>
+        <div>
+          <label class="input-label">Precio venta (€)</label>
+          <div class="input-wrapper" style="margin-bottom:0">
+            <input type="number" class="op-sell" placeholder="25.000" min="0" step="100">
+          </div>
+        </div>
+        <button class="remove-op" onclick="this.parentElement.remove()">✕ Eliminar</button>
+      `;
+      document.getElementById('operations-list').appendChild(div);
+    }
+
+    document.getElementById('add-op').addEventListener('click', addOperation);
+
+    document.getElementById('calc-advanced').addEventListener('click', () => {
+      const rows = document.querySelectorAll('.operation-row');
+      let totalGain = 0;
+      let totalLoss = 0;
+      rows.forEach(row => {
+        const buy = parseFloat(row.querySelector('.op-buy').value) || 0;
+        const sell = parseFloat(row.querySelector('.op-sell').value) || 0;
+        const diff = sell - buy;
+        if (diff > 0) totalGain += diff;
+        else totalLoss += Math.abs(diff);
+      });
+      const netGain = totalGain - totalLoss;
+      displayResults(netGain, totalLoss);
+    });
+
+    // --- Tax calculation engine ---
+    function calculateTax(baseImponible) {
+      if (baseImponible <= 0) return { total: 0, breakdown: [], effectiveRate: 0 };
+
+      let remaining = baseImponible;
+      let totalTax = 0;
+      let prevLimit = 0;
+      const breakdown = [];
+
+      for (const tramo of TRAMOS_AHORRO_2025) {
+        const tramoSize = tramo.hasta - prevLimit;
+        const taxable = Math.min(remaining, tramoSize);
+        if (taxable <= 0) break;
+        const taxAmount = taxable * tramo.tipo;
+        totalTax += taxAmount;
+        breakdown.push({
+          desde: prevLimit,
+          hasta: Math.min(tramo.hasta, prevLimit + taxable),
+          tipo: tramo.tipo,
+          base: taxable,
+          cuota: taxAmount
+        });
+        remaining -= taxable;
+        prevLimit = tramo.hasta;
+      }
+
+      return {
+        total: totalTax,
+        breakdown: breakdown,
+        effectiveRate: (totalTax / baseImponible) * 100
+      };
+    }
+
+    function displayResults(netGain, losses) {
+      const resultsDiv = document.getElementById('tax-results');
+
+      if (netGain <= 0) {
+        document.getElementById('tax-summary').innerHTML = `
+          <p style="font-size:1.125rem;font-weight:500;">No tienes que pagar impuestos</p>
+          <p class="loss-info">Tienes pérdidas netas de <strong class="negative">${formatEur(Math.abs(netGain))}</strong>.</p>
+          <div class="info-box">
+            <strong>💡 Compensación de pérdidas:</strong> Puedes compensar estas pérdidas con ganancias patrimoniales de los próximos <strong>4 años</strong>. También puedes compensar hasta un <strong>25%</strong> con rendimientos del capital mobiliario (intereses, dividendos). Art. 49 Ley IRPF.
+          </div>
+        `;
+        document.getElementById('tax-breakdown').innerHTML = '';
+        document.getElementById('tax-tramos-applied').innerHTML = '';
+        resultsDiv.style.display = 'block';
+        return;
+      }
+
+      const result = calculateTax(netGain);
+
+      // Summary
+      let summaryHtml = `
+        <div class="results" style="margin-bottom:16px;">
+          <div class="result-row">
+            <span class="result-label">Ganancia neta</span>
+            <span class="result-value positive">${formatEur(netGain)}</span>
+          </div>
+          ${losses > 0 ? `<div class="result-row">
+            <span class="result-label">Pérdidas compensadas</span>
+            <span class="result-value negative">-${formatEur(losses)}</span>
+          </div>` : ''}
+          <div class="result-row">
+            <span class="result-label">Impuestos a pagar</span>
+            <span class="result-value total-tax">${formatEur(result.total)}</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Tipo efectivo</span>
+            <span class="result-value">${result.effectiveRate.toFixed(1)}%</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Te quedas con</span>
+            <span class="result-value positive">${formatEur(netGain - result.total)}</span>
+          </div>
+        </div>
+      `;
+      document.getElementById('tax-summary').innerHTML = summaryHtml;
+
+      // Breakdown by tramos
+      let breakdownHtml = '<h4 style="font-size:0.9375rem;font-weight:500;margin:16px 0 8px;">Desglose por tramos</h4>';
+      result.breakdown.forEach(t => {
+        breakdownHtml += `
+          <div class="breakdown-item">
+            <span>${formatEur(t.desde)} — ${t.hasta === Infinity ? '∞' : formatEur(t.hasta)} (${(t.tipo*100)}%)</span>
+            <span>${formatEur(t.cuota)}</span>
+          </div>
+        `;
+      });
+      document.getElementById('tax-breakdown').innerHTML = breakdownHtml;
+
+      // Tramos table with highlighting
+      let tramosHtml = '<h4 style="font-size:0.9375rem;font-weight:500;margin:16px 0 8px;">Tramos base del ahorro IRPF 2025</h4>';
+      tramosHtml += '<table class="tramos-table"><tr><th>Base imponible</th><th>Tipo</th></tr>';
+      const tramosDisplay = [
+        { label: 'Hasta 6.000 €', tipo: '19%', limit: 6000 },
+        { label: '6.000 € — 50.000 €', tipo: '21%', limit: 50000 },
+        { label: '50.000 € — 200.000 €', tipo: '23%', limit: 200000 },
+        { label: '200.000 € — 300.000 €', tipo: '27%', limit: 300000 },
+        { label: 'Más de 300.000 €', tipo: '30%', limit: Infinity }
+      ];
+      tramosDisplay.forEach(t => {
+        const isActive = netGain > (t.limit === 6000 ? 0 : TRAMOS_AHORRO_2025[tramosDisplay.indexOf(t) - 1]?.hasta || 0);
+        tramosHtml += `<tr class="${isActive && netGain > 0 ? 'highlight-row' : ''}"><td>${t.label}</td><td>${t.tipo}</td></tr>`;
+      });
+      tramosHtml += '</table>';
+      document.getElementById('tax-tramos-applied').innerHTML = tramosHtml;
+
+      resultsDiv.style.display = 'block';
+
+      // Share
+      document.getElementById('share-tax').onclick = () => {
+        const text = `Mis ganancias crypto: ${formatEur(netGain)}\nImpuestos: ${formatEur(result.total)} (tipo efectivo ${result.effectiveRate.toFixed(1)}%)\n\nCalcula los tuyos:`;
+        shareOnTwitter(text, 'https://bitcoincalculadora.com/calculadora-impuestos/');
+      };
+    }
+
+    // Add initial operation in advanced mode
+    addOperation();
+    initPriceUpdates();
+  </script>
+---
+
+    <div class="hero-text">
+      <h2>Calculadora de <span class="accent">impuestos crypto</span> España</h2>
+      <p>Estima cuánto pagarás a Hacienda por tus ganancias en Bitcoin y criptomonedas.</p>
+    </div>
+
+    <!-- Legal notice -->
+    <div class="legal-notice">
+      <strong>⚠️ Aviso legal:</strong> Esta calculadora es orientativa y no sustituye el asesoramiento de un profesional fiscal. Los tramos mostrados corresponden a la <strong>base del ahorro del IRPF 2025</strong> (declaración que se presenta entre abril y junio de 2026). Los tipos incluyen la parte estatal y autonómica general. Tu comunidad autónoma puede aplicar variaciones. Última actualización: febrero 2026.
+    </div>
+
+    <!-- Mode switch -->
+    <div class="switch-mode">
+      <button class="active" data-mode="simple">Modo simple</button>
+      <button data-mode="advanced">Varias operaciones</button>
+    </div>
+
+    <!-- Simple mode -->
+    <div id="simple-mode">
+      <div class="tax-section">
+        <div class="input-group">
+          <label class="input-label">Ganancia total por venta de crypto (€)</label>
+          <div class="input-wrapper">
+            <span class="currency">€</span>
+            <input type="number" id="simple-gain" placeholder="10.000" min="0" step="100">
+          </div>
+          <p style="font-size:0.75rem;color:var(--text-secondary);margin-top:4px;">Precio de venta menos precio de compra. Si has hecho varias operaciones, suma todas las ganancias.</p>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Pérdidas a compensar (€, opcional)</label>
+          <div class="input-wrapper">
+            <span class="currency">€</span>
+            <input type="number" id="simple-losses" placeholder="0" min="0" step="100">
+          </div>
+          <p style="font-size:0.75rem;color:var(--text-secondary);margin-top:4px;">Pérdidas de otras ventas de crypto o activos del mismo año.</p>
+        </div>
+        <div id="simple-error" class="error-msg"></div>
+        <button class="calc-btn" id="calc-simple">Calcular impuestos</button>
+      </div>
+    </div>
+
+    <!-- Advanced mode -->
+    <div id="advanced-mode" style="display:none;">
+      <div class="tax-section">
+        <h3>Operaciones de venta</h3>
+        <p style="font-size:0.8125rem;color:var(--text-secondary);margin-bottom:12px;">Introduce el coste total de compra y el importe total de venta de cada operación.</p>
+        <div id="operations-list" class="operations-list"></div>
+        <button class="add-btn" id="add-op">+ Añadir operación</button>
+        <button class="calc-btn" id="calc-advanced">Calcular impuestos</button>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div id="tax-results" style="display:none;">
+      <div id="tax-summary"></div>
+      <div id="tax-breakdown"></div>
+      <div id="tax-tramos-applied"></div>
+      <button class="share-btn" id="share-tax" style="margin-top:16px;">Compartir en X</button>
+    </div>
+
+    <!-- Info section -->
+    <section style="margin-top:48px;">
+      <h2 class="faq-title" style="font-size:1.125rem;margin-bottom:16px;">¿Cómo tributan las criptomonedas en España?</h2>
+
+      <div class="legal-notice" style="margin-bottom:16px;">
+        <p style="margin-bottom:8px;"><strong>Tramos base del ahorro IRPF 2025</strong> (vigentes desde 1 enero 2025, Ley 7/2024):</p>
+        <table class="tramos-table">
+          <tr><th>Base imponible</th><th>Tipo</th></tr>
+          <tr><td>Hasta 6.000 €</td><td>19%</td></tr>
+          <tr><td>6.000 € — 50.000 €</td><td>21%</td></tr>
+          <tr><td>50.000 € — 200.000 €</td><td>23%</td></tr>
+          <tr><td>200.000 € — 300.000 €</td><td>27%</td></tr>
+          <tr><td>Más de 300.000 €</td><td>30%</td></tr>
+        </table>
+        <p style="font-size:0.75rem;">Novedad 2025: el tramo superior pasa del 28% al 30% para ganancias que excedan 300.000€.</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" style="margin-top:32px;">
+      <h2 class="faq-title">Preguntas frecuentes</h2>
+
+      <details class="faq-item">
+        <summary>¿Cuándo tengo que declarar mis criptomonedas?</summary>
+        <p>Debes declarar en la renta (Modelo 100) cualquier ganancia o pérdida patrimonial obtenida por transmisiones de criptomonedas, sin mínimo exento. La campaña de la Renta 2025 se presenta entre abril y junio de 2026. Además, si tienes más de 50.000€ en crypto en exchanges extranjeros a 31 de diciembre, debes presentar el Modelo 721 antes del 31 de marzo.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>¿Qué operaciones tributan?</summary>
+        <p>Vender crypto por euros, intercambiar una crypto por otra (ej: BTC → ETH), usar crypto como pago y donar criptomonedas. La mera compra o el hold no generan obligación fiscal. Transferir entre tus propias wallets tampoco tributa.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>¿Cómo funciona el método FIFO?</summary>
+        <p>FIFO (First In, First Out) significa que cuando vendes, el coste de adquisición se basa en la primera compra que hiciste. Ejemplo: compraste 1 BTC a 10.000€ en enero y otro a 15.000€ en junio. Si vendes 1 BTC, el coste base es 10.000€, no 15.000€. El método se aplica de forma global, no por exchange.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>¿El staking y los airdrops tributan diferente?</summary>
+        <p>Sí. Las recompensas de staking tributan como rendimiento del capital mobiliario en la base del ahorro (mismos tramos, 19-30%). Los airdrops, según la AEAT, se consideran ganancias patrimoniales no derivadas de transmisión y van a la base general (con tipos del 19% al 47%). Cuando vendes los tokens recibidos por staking o airdrop, se produce una segunda tributación por la plusvalía o minusvalía.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>¿Puedo compensar las pérdidas?</summary>
+        <p>Sí. Las pérdidas se compensan primero con las ganancias patrimoniales del mismo año (incluyendo acciones, fondos, etc.). Si quedan pérdidas pendientes, puedes compensar hasta un 25% de los rendimientos del capital mobiliario. Las pérdidas no compensadas se arrastran durante 4 ejercicios.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>¿Qué modelos fiscales afectan a las crypto?</summary>
+        <p><strong>Modelo 100 (IRPF):</strong> declarar ganancias/pérdidas. <strong>Modelo 721:</strong> informativo, si tienes +50.000€ en exchanges extranjeros a 31/12. <strong>Modelo 714 (Patrimonio):</strong> si tu patrimonio neto supera ~700.000€. Los Modelos 172 y 173 los presentan los exchanges, no el contribuyente.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>¿Qué pasa si no declaro?</summary>
+        <p>Hacienda puede imponer multas de hasta el 150% de la cuota defraudada. Desde 2026, los exchanges y custodios están obligados a informar automáticamente a la AEAT. Además, Hacienda cruza datos con exchanges europeos gracias a la directiva DAC8.</p>
+      </details>
+    </section>
+
+    <p class="disclaimer" style="margin-top:32px;">* Calculadora orientativa basada en la normativa vigente a fecha de febrero 2026. Los tramos corresponden a la base del ahorro del IRPF 2025 (Ley 7/2024). No incluye particularidades autonómicas. Consulta con un asesor fiscal para tu situación particular. Esto no es asesoramiento fiscal.</p>
+
+{{>affiliates}}
+{{>price-info}}
+{{>footer}}

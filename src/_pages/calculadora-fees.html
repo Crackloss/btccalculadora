@@ -1,0 +1,258 @@
+---
+layout: tool
+title: Calculadora de Fees Bitcoin en Tiempo Real - Comisiones Mempool | 2026
+description: Consulta las comisiones de Bitcoin en tiempo real y calcula el coste de enviar una transacción según la prioridad. Datos directos de mempool.space.
+keywords: fees bitcoin, comisiones bitcoin, mempool bitcoin, coste transaccion bitcoin, sat/vB, calculadora fees bitcoin
+canonical: /calculadora-fees/
+subtitle: Calculadora de fees Bitcoin
+active_fees: true
+og_title: Fees Bitcoin en Tiempo Real - ¿Cuánto cuesta enviar Bitcoin?
+og_description: Consulta las comisiones actuales de Bitcoin y calcula el coste de tu transacción según la prioridad.
+schema: |
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Calculadora de Fees Bitcoin",
+    "description": "Consulta las comisiones de transacción Bitcoin en tiempo real desde el mempool",
+    "url": "https://bitcoincalculadora.com/calculadora-fees/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+  }
+  </script>
+extra_styles: |
+  <style>
+    .fee-cards { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+    .fee-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; transition: border-color 0.2s; cursor: pointer; }
+    .fee-card:hover, .fee-card.selected { border-color: var(--accent); }
+    .fee-card.selected { background: var(--accent-dim); }
+    .fee-left { display: flex; flex-direction: column; gap: 2px; }
+    .fee-priority { font-size: 0.9375rem; font-weight: 500; }
+    .fee-time { font-size: 0.8125rem; color: var(--text-secondary); }
+    .fee-right { text-align: right; }
+    .fee-rate { font-size: 1.125rem; font-weight: 600; color: var(--accent); }
+    .fee-unit { font-size: 0.75rem; color: var(--text-secondary); }
+    .fee-loading { text-align: center; padding: 32px; color: var(--text-secondary); }
+    .tx-size-section { margin-bottom: 32px; }
+    .tx-size-section h3 { font-size: 1rem; font-weight: 500; margin-bottom: 12px; }
+    .size-options { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .size-opt { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; font-size: 0.8125rem; color: var(--text-secondary); cursor: pointer; transition: all 0.2s; }
+    .size-opt:hover, .size-opt.active { border-color: var(--accent); color: var(--accent); }
+    .cost-result { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; margin-top: 16px; }
+    .cost-sats { font-size: 1.5rem; font-weight: 600; color: var(--accent); }
+    .cost-eur { font-size: 1rem; color: var(--text-secondary); margin-top: 4px; }
+    .mempool-status { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 32px; }
+    .mempool-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 0.875rem; }
+    .last-update { font-size: 0.75rem; color: var(--text-secondary); text-align: center; margin-top: 8px; }
+    .refresh-fees { background: none; border: 1px solid var(--border); border-radius: 8px; padding: 6px 14px; color: var(--text-secondary); cursor: pointer; font-size: 0.8125rem; transition: all 0.2s; }
+    .refresh-fees:hover { border-color: var(--accent); color: var(--accent); }
+    .positive { color: var(--green) !important; }
+    .negative { color: var(--red) !important; }
+  </style>
+extra_scripts: |
+  <script>
+    // --- Fees Calculator ---
+    // Typical transaction sizes in virtual bytes (vB)
+    const TX_SIZES = {
+      'simple':    { vB: 140, label: 'Simple (1→1)', desc: '1 input, 1 output (SegWit)' },
+      'normal':    { vB: 225, label: 'Normal (1→2)', desc: '1 input, 2 outputs (pago + cambio)' },
+      'consolidar': { vB: 400, label: 'Consolidar (3→1)', desc: '3 inputs, 1 output' },
+      'compleja':  { vB: 600, label: 'Compleja (5→2)', desc: '5 inputs, 2 outputs' }
+    };
+
+    let currentFees = null;
+    let selectedPriority = 'halfHourFee';
+    let selectedSize = 'normal';
+
+    async function fetchFees() {
+      document.getElementById('fee-cards').innerHTML = '<div class="fee-loading">Cargando fees del mempool...</div>';
+      try {
+        const res = await fetch('https://mempool.space/api/v1/fees/recommended');
+        if (!res.ok) throw new Error('API error');
+        currentFees = await res.json();
+
+        // Also fetch mempool info
+        try {
+          const mRes = await fetch('https://mempool.space/api/mempool');
+          const mempool = await mRes.json();
+          document.getElementById('mempool-count').textContent = mempool.count.toLocaleString('es-ES');
+          document.getElementById('mempool-size').textContent = (mempool.vsize / 1000000).toFixed(2) + ' MvB';
+          document.getElementById('mempool-fees').textContent = (mempool.total_fee / 100000000).toFixed(4) + ' BTC';
+        } catch(e) {
+          console.warn('Mempool info unavailable');
+        }
+
+        renderFees();
+        updateCost();
+        document.getElementById('last-update').textContent = 'Actualizado: ' + new Date().toLocaleTimeString('es-ES');
+      } catch (e) {
+        document.getElementById('fee-cards').innerHTML = '<div class="fee-loading">Error al obtener datos. <button class="refresh-fees" onclick="fetchFees()">Reintentar</button></div>';
+      }
+    }
+
+    function renderFees() {
+      const priorities = [
+        { key: 'fastestFee', label: '🚀 Prioridad alta', time: '~10 min (próximo bloque)' },
+        { key: 'halfHourFee', label: '⚡ Media hora', time: '~30 min (3 bloques)' },
+        { key: 'hourFee', label: '🕐 Una hora', time: '~60 min (6 bloques)' },
+        { key: 'economyFee', label: '🐌 Económica', time: 'Sin prisa' },
+        { key: 'minimumFee', label: '💤 Mínima', time: 'Cuando se pueda' }
+      ];
+
+      let html = '';
+      priorities.forEach(p => {
+        const rate = currentFees[p.key];
+        if (rate === undefined) return;
+        html += `
+          <div class="fee-card ${selectedPriority === p.key ? 'selected' : ''}" data-priority="${p.key}" onclick="selectPriority('${p.key}')">
+            <div class="fee-left">
+              <span class="fee-priority">${p.label}</span>
+              <span class="fee-time">${p.time}</span>
+            </div>
+            <div class="fee-right">
+              <span class="fee-rate">${rate}</span>
+              <span class="fee-unit">sat/vB</span>
+            </div>
+          </div>
+        `;
+      });
+      document.getElementById('fee-cards').innerHTML = html;
+    }
+
+    function selectPriority(key) {
+      selectedPriority = key;
+      renderFees();
+      updateCost();
+    }
+
+    function selectSize(key) {
+      selectedSize = key;
+      document.querySelectorAll('.size-opt').forEach(el => {
+        el.classList.toggle('active', el.dataset.size === key);
+      });
+      updateCost();
+    }
+
+    function updateCost() {
+      if (!currentFees) return;
+      const rate = currentFees[selectedPriority];
+      const size = TX_SIZES[selectedSize].vB;
+      const costSats = rate * size;
+      const btcPrice = getBtcPrice();
+      const costEur = btcPrice ? (costSats / 100000000) * btcPrice : null;
+
+      document.getElementById('cost-sats').textContent = costSats.toLocaleString('es-ES') + ' sats';
+      document.getElementById('cost-eur').textContent = costEur ? '≈ ' + costEur.toFixed(2) + ' €' : '';
+      document.getElementById('cost-rate').textContent = rate + ' sat/vB × ' + size + ' vB';
+    }
+
+    // Init size buttons
+    document.querySelectorAll('.size-opt').forEach(el => {
+      el.addEventListener('click', () => selectSize(el.dataset.size));
+    });
+
+    // Custom size input
+    document.getElementById('custom-vb').addEventListener('input', (e) => {
+      const val = parseInt(e.target.value);
+      if (val > 0) {
+        TX_SIZES['custom'] = { vB: val, label: 'Custom', desc: '' };
+        selectedSize = 'custom';
+        document.querySelectorAll('.size-opt').forEach(el => el.classList.remove('active'));
+        updateCost();
+      }
+    });
+
+    // Auto-refresh every 30s
+    fetchFees();
+    setInterval(fetchFees, 30000);
+    initPriceUpdates();
+
+    // Update cost when BTC price changes
+    window.addEventListener('btcPriceUpdated', updateCost);
+  </script>
+---
+
+    <div class="hero-text">
+      <h2>Fees <span class="accent">Bitcoin</span> en tiempo real</h2>
+      <p>Consulta las comisiones actuales de la red y calcula el coste de tu transacción.</p>
+    </div>
+
+    <!-- Fee cards -->
+    <div id="fee-cards" class="fee-cards">
+      <div class="fee-loading">Cargando fees del mempool...</div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+      <span id="last-update" class="last-update"></span>
+      <button class="refresh-fees" onclick="fetchFees()">🔄 Actualizar</button>
+    </div>
+
+    <!-- Mempool status -->
+    <div class="mempool-status">
+      <h3 style="font-size:0.9375rem;font-weight:500;margin-bottom:8px;">Estado del mempool</h3>
+      <div class="mempool-row">
+        <span>Transacciones pendientes</span>
+        <span id="mempool-count">—</span>
+      </div>
+      <div class="mempool-row">
+        <span>Tamaño del mempool</span>
+        <span id="mempool-size">—</span>
+      </div>
+      <div class="mempool-row">
+        <span>Fees pendientes</span>
+        <span id="mempool-fees">—</span>
+      </div>
+    </div>
+
+    <!-- Transaction size selector -->
+    <div class="tx-size-section">
+      <h3>Tipo de transacción</h3>
+      <div class="size-options">
+        <button class="size-opt" data-size="simple">Simple (1→1)</button>
+        <button class="size-opt active" data-size="normal">Normal (1→2)</button>
+        <button class="size-opt" data-size="consolidar">Consolidar (3→1)</button>
+        <button class="size-opt" data-size="compleja">Compleja (5→2)</button>
+      </div>
+      <div class="input-group" style="margin-bottom:0;">
+        <label class="input-label">O introduce el tamaño manualmente (vB)</label>
+        <div class="input-wrapper">
+          <input type="number" id="custom-vb" placeholder="225" min="1" step="1">
+        </div>
+      </div>
+    </div>
+
+    <!-- Cost result -->
+    <div class="cost-result">
+      <p style="font-size:0.8125rem;color:var(--text-secondary);margin-bottom:8px;">Coste estimado de tu transacción</p>
+      <div class="cost-sats" id="cost-sats">—</div>
+      <div class="cost-eur" id="cost-eur"></div>
+      <p style="font-size:0.75rem;color:var(--text-secondary);margin-top:8px;" id="cost-rate"></p>
+    </div>
+
+    <p class="disclaimer" style="margin-top:24px;">* Datos en tiempo real de <a href="https://mempool.space" target="_blank" rel="noopener" style="color:var(--accent)">mempool.space</a> (The Mempool Open Source Project®). Los fees pueden cambiar rápidamente. Se actualizan automáticamente cada 30 segundos.</p>
+
+    <!-- FAQ -->
+    <section class="faq" style="margin-top:48px;">
+      <h2 class="faq-title">Preguntas frecuentes</h2>
+      <details class="faq-item">
+        <summary>¿Qué es sat/vB?</summary>
+        <p>Es la unidad de medida de las comisiones de Bitcoin: satoshis por byte virtual. Un satoshi es la unidad más pequeña de Bitcoin (0.00000001 BTC). Los bytes virtuales (vB) miden el tamaño de tu transacción en la red. Más sat/vB = más prioridad = confirmación más rápida.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Cuánto tarda en confirmarse mi transacción?</summary>
+        <p>Depende de los fees que pagues. Con la tarifa más alta, normalmente se confirma en el siguiente bloque (~10 minutos). Con tarifa económica puede tardar horas o incluso días si hay mucha congestión.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Qué determina el tamaño de la transacción?</summary>
+        <p>No la cantidad de BTC que envías, sino el número de inputs (UTXOs que gastas) y outputs (destinatarios + cambio). Una transacción con muchos inputs pequeños será más grande y más cara que una con un solo input grande. Las direcciones SegWit (bc1...) son más eficientes que las legacy.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Puedo enviar con fees más bajas?</summary>
+        <p>Sí, pero tu transacción tardará más en confirmarse. Si no tienes prisa, la tarifa económica suele funcionar en 1-24 horas. Si usas Lightning Network, las comisiones son prácticamente cero para pagos instantáneos.</p>
+      </details>
+    </section>
+
+{{>affiliates}}
+{{>price-info}}
+{{>footer}}

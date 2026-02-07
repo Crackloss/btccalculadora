@@ -1,0 +1,357 @@
+---
+layout: tool
+title: Calculadora de Herencia Bitcoin España 2026 - Impuesto de Sucesiones Crypto
+description: Calcula cuánto pagarías de impuesto de sucesiones al heredar Bitcoin y criptomonedas en España. Por comunidad autónoma, con bonificaciones reales.
+keywords: herencia bitcoin, impuesto sucesiones criptomonedas, heredar bitcoin españa, herencia crypto impuestos, sucesiones bitcoin comunidad autonoma
+canonical: /calculadora-herencia/
+subtitle: Calculadora de herencia crypto
+active_herencia: true
+og_title: Herencia Bitcoin España - ¿Cuánto paga tu familia?
+og_description: Calcula el impuesto de sucesiones por heredar Bitcoin en España según tu comunidad autónoma.
+schema: |
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Calculadora de Herencia Bitcoin España",
+    "description": "Estima el impuesto de sucesiones por heredar criptomonedas en España según la comunidad autónoma",
+    "url": "https://bitcoincalculadora.com/calculadora-herencia/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+  }
+  </script>
+extra_styles: |
+  <style>
+    .calc-btn { width: 100%; padding: 16px; background: var(--accent); color: #000; font-weight: 600; font-size: 1rem; border: none; border-radius: 12px; cursor: pointer; transition: opacity 0.2s; margin: 24px 0; }
+    .calc-btn:hover { opacity: 0.9; }
+    .select-wrapper { position: relative; }
+    select { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-family: inherit; font-size: 1rem; padding: 16px 20px; appearance: none; cursor: pointer; outline: none; }
+    select:focus { border-color: #404040; }
+    .select-arrow { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); pointer-events: none; }
+    .legal-notice { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 32px; font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.6; }
+    .legal-notice strong { color: var(--accent); }
+    .error-msg { color: var(--red); font-size: 0.875rem; padding: 12px; background: rgba(239,68,68,0.1); border-radius: 8px; display: none; }
+    .positive { color: var(--green) !important; }
+    .negative { color: var(--red) !important; }
+    .info-box { background: var(--green-dim); border: 1px solid rgba(34,197,94,0.3); border-radius: 8px; padding: 12px; font-size: 0.8125rem; color: var(--text-secondary); margin: 12px 0; line-height: 1.5; }
+    .warning-box { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3); border-radius: 8px; padding: 12px; font-size: 0.8125rem; color: var(--text-secondary); margin: 12px 0; line-height: 1.5; }
+    .ccaa-note { font-size: 0.8125rem; color: var(--text-secondary); margin-top: 8px; padding: 12px; background: var(--surface); border-radius: 8px; line-height: 1.5; }
+  </style>
+extra_scripts: |
+  <script>
+    // =====================================================
+    // CALCULADORA DE HERENCIA CRYPTO - ESPAÑA
+    // =====================================================
+    // Marco legal:
+    // - Impuesto de Sucesiones y Donaciones (ISD)
+    //   Ley 29/1987, de 18 de diciembre
+    // - Las criptomonedas se valoran a precio de mercado
+    //   a fecha de fallecimiento
+    // - Competencia autonómica: cada CCAA aplica sus
+    //   propias bonificaciones y reducciones
+    // - Grupos de parentesco:
+    //   I: Descendientes <21 años
+    //   II: Descendientes ≥21, cónyuge, ascendientes
+    //   III: Hermanos, sobrinos, tíos
+    //   IV: Otros (primos, sin parentesco)
+    //
+    // NOTA: Cálculo muy simplificado y orientativo.
+    // Las bonificaciones autonómicas son complejas y
+    // dependen de muchos factores individuales.
+    // =====================================================
+
+    // Bonificaciones simplificadas por CCAA para Grupo II
+    // (descendientes ≥21 años, cónyuge, ascendientes)
+    // Fuente: normativa autonómica vigente a feb 2026
+    const CCAA_DATA = {
+      'andalucia':    { name: 'Andalucía',           bonif: 0.99, nota: 'Bonificación del 99% en cuota para Grupos I y II (herencias hasta 1M€).' },
+      'aragon':       { name: 'Aragón',              bonif: 0.99, nota: 'Bonificación del 99% para cónyuge y descendientes.' },
+      'asturias':     { name: 'Asturias',            bonif: 0.95, nota: 'Bonificaciones entre 95-100% según importe y parentesco.' },
+      'baleares':     { name: 'Islas Baleares',      bonif: 0.50, nota: 'Bonificación del 50% para Grupo II. Escala propia.' },
+      'canarias':     { name: 'Canarias',            bonif: 0.998, nota: 'Prácticamente exento: bonificación del 99,8% para Grupos I y II.' },
+      'cantabria':    { name: 'Cantabria',           bonif: 0.90, nota: 'Bonificación del 90% para cónyuge y descendientes.' },
+      'clm':          { name: 'Castilla-La Mancha',  bonif: 1.00, nota: 'Bonificación del 100% para Grupos I y II.' },
+      'cyl':          { name: 'Castilla y León',     bonif: 0.99, nota: 'Bonificación del 99% para herencias en Grupo II.' },
+      'cataluna':     { name: 'Cataluña',            bonif: 0.20, nota: 'Sin grandes bonificaciones generales. Reducciones por parentesco limitadas. Una de las CCAA con mayor carga.' },
+      'extremadura':  { name: 'Extremadura',         bonif: 0.90, nota: 'Bonificación del 90% para Grupo II en herencias moderadas.' },
+      'galicia':      { name: 'Galicia',             bonif: 0.50, nota: 'Reducciones por parentesco. Escala propia con tipos desde 5% a 18%.' },
+      'madrid':       { name: 'Comunidad de Madrid', bonif: 0.99, nota: 'Bonificación del 99% en cuota para Grupos I y II. Una de las más favorables.' },
+      'murcia':       { name: 'Región de Murcia',    bonif: 0.99, nota: 'Bonificación del 99% para Grupos I y II.' },
+      'navarra':      { name: 'Navarra',             bonif: 0.00, nota: 'Régimen foral propio. Tipo fijo del 0,8% para cónyuge/descendientes en línea directa.' },
+      'paisvasco':    { name: 'País Vasco',          bonif: 0.00, nota: 'Régimen foral. Exención para cónyuge y descendientes hasta ~400.000€. Por encima, tipos del 1,5-6%.' },
+      'rioja':        { name: 'La Rioja',            bonif: 0.99, nota: 'Bonificación del 99% para Grupos I y II.' },
+      'valencia':     { name: 'Comunidad Valenciana', bonif: 0.99, nota: 'Bonificación del 99% para Grupos I y II (herencias hasta cierto límite).' }
+    };
+
+    // Escala estatal del ISD (base, se usa cuando no hay bonificación)
+    // Art. 21.2 Ley 29/1987
+    const ESCALA_ESTATAL = [
+      { hasta: 7993.46,   tipo: 0.0765 },
+      { hasta: 15980.91,  tipo: 0.0850 },
+      { hasta: 23968.36,  tipo: 0.0935 },
+      { hasta: 31955.81,  tipo: 0.1020 },
+      { hasta: 39943.26,  tipo: 0.1105 },
+      { hasta: 47930.72,  tipo: 0.1190 },
+      { hasta: 55918.17,  tipo: 0.1275 },
+      { hasta: 63905.62,  tipo: 0.1360 },
+      { hasta: 71893.07,  tipo: 0.1445 },
+      { hasta: 79880.52,  tipo: 0.1530 },
+      { hasta: 119820.77, tipo: 0.1615 },
+      { hasta: 159757.03, tipo: 0.1870 },
+      { hasta: 239636.54, tipo: 0.2225 },
+      { hasta: 398940.90, tipo: 0.2590 },
+      { hasta: 797814.48, tipo: 0.2950 },
+      { hasta: Infinity,  tipo: 0.3400 }
+    ];
+
+    // Reducciones por grupo de parentesco (estatal)
+    const REDUCCIONES_GRUPO = {
+      '1': 47859,    // Grupo I: descendientes <21 años
+      '2': 15957,    // Grupo II: descendientes ≥21, cónyuge, ascend.
+      '3': 7993,     // Grupo III: hermanos, sobrinos, tíos
+      '4': 0         // Grupo IV: otros
+    };
+
+    // Coeficiente multiplicador por grupo y patrimonio preexistente
+    const COEF_GRUPO = { '1': 1.0, '2': 1.0, '3': 1.5882, '4': 2.0 };
+
+    function calcularISD(baseImponible, grupo, ccaa) {
+      const reduccion = REDUCCIONES_GRUPO[grupo] || 0;
+      let baseLiquidable = Math.max(baseImponible - reduccion, 0);
+
+      // Cálculo con escala estatal
+      let cuotaIntegra = 0;
+      let prevLimit = 0;
+      for (const tramo of ESCALA_ESTATAL) {
+        const taxable = Math.min(Math.max(baseLiquidable - prevLimit, 0), tramo.hasta - prevLimit);
+        if (taxable <= 0) break;
+        cuotaIntegra += taxable * tramo.tipo;
+        prevLimit = tramo.hasta;
+      }
+
+      // Coeficiente multiplicador
+      const coef = COEF_GRUPO[grupo] || 2.0;
+      let cuotaTributaria = cuotaIntegra * coef;
+
+      // Bonificación autonómica
+      const ccaaInfo = CCAA_DATA[ccaa];
+      let bonificacion = 0;
+      let cuotaFinal = cuotaTributaria;
+
+      if (ccaaInfo) {
+        // Navarra y País Vasco tienen regímenes forales especiales
+        if (ccaa === 'navarra' && (grupo === '1' || grupo === '2')) {
+          cuotaFinal = baseImponible * 0.008; // 0,8% tipo fijo
+        } else if (ccaa === 'paisvasco' && (grupo === '1' || grupo === '2')) {
+          const exencion = 400000;
+          if (baseImponible <= exencion) {
+            cuotaFinal = 0;
+          } else {
+            cuotaFinal = (baseImponible - exencion) * 0.015; // ~1,5% simplificado
+          }
+        } else {
+          bonificacion = cuotaTributaria * ccaaInfo.bonif;
+          cuotaFinal = cuotaTributaria - bonificacion;
+        }
+      }
+
+      return {
+        baseImponible,
+        reduccion,
+        baseLiquidable,
+        cuotaIntegra,
+        coeficiente: coef,
+        cuotaTributaria,
+        bonificacion,
+        cuotaFinal: Math.max(cuotaFinal, 0),
+        tipoEfectivo: baseImponible > 0 ? (Math.max(cuotaFinal, 0) / baseImponible) * 100 : 0
+      };
+    }
+
+    document.getElementById('calc-herencia').addEventListener('click', () => {
+      const valor = parseFloat(document.getElementById('crypto-value').value);
+      const grupo = document.getElementById('parentesco').value;
+      const ccaa = document.getElementById('ccaa').value;
+      const errorDiv = document.getElementById('herencia-error');
+      const resultsDiv = document.getElementById('herencia-results');
+
+      errorDiv.style.display = 'none';
+      resultsDiv.style.display = 'none';
+
+      if (!valor || valor <= 0 || !grupo || !ccaa) {
+        errorDiv.textContent = 'Rellena todos los campos correctamente.';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      const result = calcularISD(valor, grupo, ccaa);
+      const ccaaInfo = CCAA_DATA[ccaa];
+
+      document.getElementById('res-base').textContent = formatEur(result.baseImponible);
+      document.getElementById('res-reduccion').textContent = '-' + formatEur(result.reduccion);
+      document.getElementById('res-base-liq').textContent = formatEur(result.baseLiquidable);
+      document.getElementById('res-cuota').textContent = formatEur(result.cuotaTributaria);
+      document.getElementById('res-bonif').textContent = '-' + formatEur(result.bonificacion);
+      document.getElementById('res-final').textContent = formatEur(result.cuotaFinal);
+      document.getElementById('res-efectivo').textContent = result.tipoEfectivo.toFixed(2) + '%';
+      document.getElementById('res-neto').textContent = formatEur(result.baseImponible - result.cuotaFinal);
+      document.getElementById('ccaa-nota').innerHTML = `<strong>${ccaaInfo.name}:</strong> ${ccaaInfo.nota}`;
+
+      resultsDiv.style.display = 'block';
+    });
+
+    initPriceUpdates();
+  </script>
+---
+
+    <div class="hero-text">
+      <h2>Herencia <span class="accent">Bitcoin</span> en España</h2>
+      <p>Estima cuánto pagaría tu familia de impuesto de sucesiones por heredar tus criptomonedas.</p>
+    </div>
+
+    <div class="legal-notice">
+      <strong>⚠️ Aviso importante:</strong> El Impuesto de Sucesiones está cedido a las comunidades autónomas, que aplican bonificaciones muy diferentes. Esta calculadora ofrece una estimación simplificada. Tu situación real depende de muchos factores (patrimonio preexistente, otros bienes heredados, discapacidad, etc.). Consulta siempre con un profesional fiscal. Última actualización: febrero 2026.
+    </div>
+
+    <!-- Crypto value -->
+    <div class="input-group">
+      <label class="input-label">Valor de las criptomonedas heredadas (€)</label>
+      <div class="input-wrapper">
+        <span class="currency">€</span>
+        <input type="number" id="crypto-value" placeholder="50.000" min="0" step="1000">
+      </div>
+      <p style="font-size:0.75rem;color:var(--text-secondary);margin-top:4px;">Se valoran al precio de mercado a fecha de fallecimiento.</p>
+    </div>
+
+    <!-- Parentesco -->
+    <div class="input-group">
+      <label class="input-label">Parentesco con el fallecido</label>
+      <div class="select-wrapper">
+        <select id="parentesco">
+          <option value="">Selecciona...</option>
+          <option value="1">Grupo I: Hijos menores de 21 años</option>
+          <option value="2" selected>Grupo II: Hijos ≥21, cónyuge, padres</option>
+          <option value="3">Grupo III: Hermanos, sobrinos, tíos</option>
+          <option value="4">Grupo IV: Primos, sin parentesco</option>
+        </select>
+        <span class="select-arrow">▼</span>
+      </div>
+    </div>
+
+    <!-- CCAA -->
+    <div class="input-group">
+      <label class="input-label">Comunidad autónoma del fallecido</label>
+      <div class="select-wrapper">
+        <select id="ccaa">
+          <option value="">Selecciona...</option>
+          <option value="andalucia">Andalucía</option>
+          <option value="aragon">Aragón</option>
+          <option value="asturias">Asturias</option>
+          <option value="baleares">Islas Baleares</option>
+          <option value="canarias">Canarias</option>
+          <option value="cantabria">Cantabria</option>
+          <option value="clm">Castilla-La Mancha</option>
+          <option value="cyl">Castilla y León</option>
+          <option value="cataluna">Cataluña</option>
+          <option value="extremadura">Extremadura</option>
+          <option value="galicia">Galicia</option>
+          <option value="madrid" selected>Comunidad de Madrid</option>
+          <option value="murcia">Región de Murcia</option>
+          <option value="navarra">Navarra</option>
+          <option value="paisvasco">País Vasco</option>
+          <option value="rioja">La Rioja</option>
+          <option value="valencia">Comunidad Valenciana</option>
+        </select>
+        <span class="select-arrow">▼</span>
+      </div>
+    </div>
+
+    <button class="calc-btn" id="calc-herencia">Calcular impuesto de sucesiones</button>
+
+    <div id="herencia-error" class="error-msg"></div>
+
+    <!-- Results -->
+    <div id="herencia-results" style="display:none;">
+      <h3 style="font-size:1.125rem;margin-bottom:16px;font-weight:500;">Estimación del impuesto</h3>
+
+      <div class="results" style="margin-bottom:16px;">
+        <div class="result-row">
+          <span class="result-label">Valor de la herencia crypto</span>
+          <span class="result-value" id="res-base">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Reducción por parentesco</span>
+          <span class="result-value positive" id="res-reduccion">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Base liquidable</span>
+          <span class="result-value" id="res-base-liq">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Cuota tributaria</span>
+          <span class="result-value" id="res-cuota">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Bonificación autonómica</span>
+          <span class="result-value positive" id="res-bonif">—</span>
+        </div>
+      </div>
+
+      <div class="results">
+        <div class="result-row">
+          <span class="result-label"><strong>Impuesto a pagar</strong></span>
+          <span class="result-value" style="color:var(--accent);font-weight:600;" id="res-final">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Tipo efectivo</span>
+          <span class="result-value" id="res-efectivo">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Herencia neta recibida</span>
+          <span class="result-value positive" id="res-neto">—</span>
+        </div>
+      </div>
+
+      <div class="ccaa-note" id="ccaa-nota"></div>
+
+      <div class="warning-box" style="margin-top:16px;">
+        <strong>🔑 Importante:</strong> Si heredas criptomonedas, necesitarás acceso a las claves privadas o seed phrases del fallecido. Sin ellas, los fondos son irrecuperables. Considera esto al planificar tu patrimonio digital.
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <section class="faq" style="margin-top:48px;">
+      <h2 class="faq-title">Preguntas frecuentes</h2>
+
+      <details class="faq-item">
+        <summary>¿Cómo se valoran las criptomonedas en una herencia?</summary>
+        <p>Las criptomonedas se valoran al precio de mercado a fecha de fallecimiento. Si el fallecido tenía 1 BTC y el precio ese día era 90.000€, el valor fiscal es 90.000€. Conviene guardar prueba del precio (captura de exchange, CoinGecko, etc.).</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>¿Y si heredo y luego vendo, pago dos veces?</summary>
+        <p>Sí, son dos hechos imponibles diferentes. Primero pagas el Impuesto de Sucesiones por heredar. Después, si vendes las criptomonedas, pagas IRPF sobre la ganancia patrimonial (diferencia entre el precio de venta y el valor a fecha de herencia, que es tu nuevo precio de adquisición).</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>¿Qué pasa si nadie sabe que tengo crypto?</summary>
+        <p>Si tus herederos no conocen la existencia de tus criptomonedas o no tienen acceso a las claves privadas, los fondos se perderán para siempre. Es fundamental tener un plan de herencia digital: documenta qué tienes, dónde están las claves, y comparte esta información de forma segura con alguien de confianza.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>¿Por qué varía tanto el impuesto entre comunidades?</summary>
+        <p>El Impuesto de Sucesiones está cedido a las CCAA, que tienen competencia para aplicar bonificaciones. Madrid, Andalucía, Valencia o Murcia bonifican el 99% para familiares directos, mientras que Cataluña apenas ofrece descuentos. Navarra y País Vasco tienen su propio régimen foral con reglas diferentes.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>¿Cómo planifico la herencia de mis Bitcoin?</summary>
+        <p>Opciones recomendadas: (1) Guarda tu seed phrase en una cápsula metálica resistente al fuego en una ubicación segura. (2) Usa un esquema multisig o Shamir's Secret Sharing para dividir las claves entre varias personas. (3) Deja instrucciones claras en tu testamento (sin incluir las claves en el propio testamento). (4) Considera una donación en vida si tu CCAA tiene bonificaciones favorables.</p>
+      </details>
+    </section>
+
+    <p class="disclaimer" style="margin-top:32px;">* Cálculo orientativo basado en la escala estatal del ISD (Ley 29/1987) y bonificaciones autonómicas simplificadas. No incluye patrimonio preexistente del heredero, seguros de vida, ni particularidades del testamento. Navarra y País Vasco aplican regímenes forales propios. Consulta con un asesor fiscal. Esto no es asesoramiento fiscal.</p>
+
+{{>affiliates}}
+{{>price-info}}
+{{>footer}}

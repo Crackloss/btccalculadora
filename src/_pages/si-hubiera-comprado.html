@@ -1,0 +1,278 @@
+---
+layout: tool
+title: Si Hubiera Comprado Bitcoin - Calculadora de Rentabilidad Histórica | 2026
+description: Descubre cuánto dinero tendrías hoy si hubieras comprado Bitcoin en cualquier fecha del pasado. Calculadora gratuita con datos históricos reales.
+keywords: si hubiera comprado bitcoin, calculadora bitcoin historico, rentabilidad bitcoin, invertir bitcoin pasado, cuanto tendria bitcoin
+canonical: /si-hubiera-comprado/
+subtitle: Si hubiera comprado Bitcoin...
+active_hubiera: true
+og_title: Si Hubiera Comprado Bitcoin - ¿Cuánto tendrías hoy?
+og_description: Calcula cuánto dinero tendrías si hubieras invertido en Bitcoin en cualquier momento del pasado. Datos históricos reales.
+schema: |
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Si Hubiera Comprado Bitcoin",
+    "description": "Calculadora para saber cuánto tendrías hoy si hubieras comprado Bitcoin en el pasado",
+    "url": "https://bitcoincalculadora.com/si-hubiera-comprado/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Cuánto tendría si hubiera comprado 100€ en Bitcoin hace 5 años?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Depende de la fecha exacta. Usa nuestra calculadora con datos históricos reales para ver el resultado exacto de cualquier inversión pasada en Bitcoin." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿De dónde salen los datos de precio histórico?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Utilizamos la API de CoinGecko que proporciona datos históricos diarios del precio de Bitcoin en euros desde 2013." }
+      }
+    ]
+  }
+  </script>
+extra_scripts: |
+  <script>
+    // --- Si Hubiera Comprado Bitcoin ---
+    const dateInput = document.getElementById('buy-date');
+    const amountInput = document.getElementById('buy-amount');
+    const calcBtn = document.getElementById('calc-btn');
+    const resultsDiv = document.getElementById('hubiera-results');
+    const errorDiv = document.getElementById('hubiera-error');
+
+    // Set date limits
+    const today = new Date();
+    const minDate = '2013-04-28'; // CoinGecko BTC/EUR earliest reliable data
+    dateInput.setAttribute('min', minDate);
+    dateInput.setAttribute('max', today.toISOString().split('T')[0]);
+
+    // Quick date buttons
+    document.querySelectorAll('.quick-date').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const years = parseInt(btn.dataset.years);
+        const d = new Date();
+        d.setFullYear(d.getFullYear() - years);
+        dateInput.value = d.toISOString().split('T')[0];
+      });
+    });
+
+    async function fetchHistoricalPrice(dateStr) {
+      // CoinGecko /coins/bitcoin/history?date=DD-MM-YYYY (free, no API key)
+      const [y, m, d] = dateStr.split('-');
+      const cgDate = `${d}-${m}-${y}`;
+      const url = `https://api.coingecko.com/api/v3/coins/bitcoin/history?date=${cgDate}&localization=false`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('API error');
+      const data = await res.json();
+      if (!data.market_data) throw new Error('No data for this date');
+      return data.market_data.current_price.eur;
+    }
+
+    calcBtn.addEventListener('click', async () => {
+      const dateStr = dateInput.value;
+      const amount = parseFloat(amountInput.value);
+      errorDiv.style.display = 'none';
+      resultsDiv.style.display = 'none';
+
+      if (!dateStr || !amount || amount <= 0) {
+        errorDiv.textContent = 'Introduce una fecha y una cantidad válida.';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      calcBtn.disabled = true;
+      calcBtn.textContent = 'Calculando...';
+
+      try {
+        const historicalPrice = await fetchHistoricalPrice(dateStr);
+        const currentPrice = getBtcPrice();
+
+        if (!currentPrice) {
+          errorDiv.textContent = 'No se pudo obtener el precio actual. Reintenta en unos segundos.';
+          errorDiv.style.display = 'block';
+          return;
+        }
+
+        const btcBought = amount / historicalPrice;
+        const satsBought = Math.round(btcBought * 100000000);
+        const currentValue = btcBought * currentPrice;
+        const profit = currentValue - amount;
+        const profitPct = ((currentValue / amount) - 1) * 100;
+        const multiplier = currentValue / amount;
+
+        // Calculate days
+        const buyDate = new Date(dateStr);
+        const diffDays = Math.floor((today - buyDate) / (1000 * 60 * 60 * 24));
+        const diffYears = (diffDays / 365.25).toFixed(1);
+
+        // Format date nicely
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = buyDate.toLocaleDateString('es-ES', options);
+
+        document.getElementById('res-date').textContent = formattedDate;
+        document.getElementById('res-price-then').textContent = formatEur(historicalPrice);
+        document.getElementById('res-price-now').textContent = formatEur(currentPrice);
+        document.getElementById('res-btc').textContent = btcBought.toFixed(8) + ' BTC';
+        document.getElementById('res-sats').textContent = formatNumber(satsBought) + ' sats';
+        document.getElementById('res-invested').textContent = formatEur(amount);
+        document.getElementById('res-value').textContent = formatEur(currentValue);
+        document.getElementById('res-profit').textContent = (profit >= 0 ? '+' : '') + formatEur(profit);
+        document.getElementById('res-profit').className = 'result-value ' + (profit >= 0 ? 'positive' : 'negative');
+        document.getElementById('res-pct').textContent = (profitPct >= 0 ? '+' : '') + profitPct.toFixed(1) + '%';
+        document.getElementById('res-pct').className = 'result-value ' + (profitPct >= 0 ? 'positive' : 'negative');
+        document.getElementById('res-multiplier').textContent = multiplier.toFixed(1) + 'x';
+        document.getElementById('res-time').textContent = diffDays + ' días (' + diffYears + ' años)';
+
+        resultsDiv.style.display = 'block';
+
+        // Setup share button
+        document.getElementById('share-result').onclick = () => {
+          const text = `Si hubiera invertido ${formatEur(amount)} en #Bitcoin el ${formattedDate}, hoy tendría ${formatEur(currentValue)} (${profitPct >= 0 ? '+' : ''}${profitPct.toFixed(0)}%) 🚀\n\nCalculadora:`;
+          shareOnTwitter(text, 'https://bitcoincalculadora.com/si-hubiera-comprado/');
+        };
+
+      } catch (e) {
+        errorDiv.textContent = 'No hay datos para esta fecha. Prueba con otra fecha (desde abril 2013).';
+        errorDiv.style.display = 'block';
+      } finally {
+        calcBtn.disabled = false;
+        calcBtn.textContent = 'Calcular';
+      }
+    });
+
+    initPriceUpdates();
+  </script>
+extra_styles: |
+  <style>
+    .quick-dates { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+    .quick-date { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); padding: 6px 12px; font-size: 0.8125rem; cursor: pointer; transition: all 0.2s; }
+    .quick-date:hover { border-color: var(--accent); color: var(--accent); }
+    .calc-btn { width: 100%; padding: 16px; background: var(--accent); color: #000; font-weight: 600; font-size: 1rem; border: none; border-radius: 12px; cursor: pointer; transition: opacity 0.2s; margin: 24px 0; }
+    .calc-btn:hover { opacity: 0.9; }
+    .calc-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .error-msg { color: var(--red); font-size: 0.875rem; padding: 12px; background: rgba(239,68,68,0.1); border-radius: 8px; }
+    .positive { color: var(--green) !important; }
+    .negative { color: var(--red) !important; }
+    input[type="date"] { flex: 1; background: transparent; border: none; outline: none; font-family: 'Geist Mono', monospace; font-size: 1.125rem; color: var(--text); padding: 16px 20px; width: 100%; color-scheme: dark; }
+  </style>
+---
+
+    <div class="hero-text">
+      <h2>Si hubiera comprado <span class="accent">Bitcoin</span>...</h2>
+      <p>Descubre cuánto tendrías hoy si hubieras invertido en Bitcoin en cualquier momento del pasado.</p>
+    </div>
+
+    <!-- Date input -->
+    <div class="input-group">
+      <label class="input-label">¿Cuándo habrías comprado?</label>
+      <div class="input-wrapper">
+        <input type="date" id="buy-date" value="2020-01-01">
+      </div>
+      <div class="quick-dates">
+        <button class="quick-date" data-years="1">Hace 1 año</button>
+        <button class="quick-date" data-years="3">3 años</button>
+        <button class="quick-date" data-years="5">5 años</button>
+        <button class="quick-date" data-years="10">10 años</button>
+      </div>
+    </div>
+
+    <!-- Amount input -->
+    <div class="input-group">
+      <label class="input-label">¿Cuánto habrías invertido?</label>
+      <div class="input-wrapper">
+        <span class="currency">€</span>
+        <input type="number" id="buy-amount" value="1000" min="1" step="100">
+      </div>
+    </div>
+
+    <button class="calc-btn" id="calc-btn">Calcular</button>
+
+    <div id="hubiera-error" class="error-msg" style="display:none;"></div>
+
+    <!-- Results -->
+    <div id="hubiera-results" style="display:none;">
+      <h3 style="font-size:1.125rem; margin-bottom:16px; font-weight:500;">Resultado</h3>
+
+      <div class="results" style="margin-bottom:24px;">
+        <div class="result-row">
+          <span class="result-label">Fecha de compra</span>
+          <span class="result-value" id="res-date">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Precio BTC entonces</span>
+          <span class="result-value" id="res-price-then">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Precio BTC ahora</span>
+          <span class="result-value" id="res-price-now">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Habrías comprado</span>
+          <span class="result-value" id="res-btc">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">En satoshis</span>
+          <span class="result-value" id="res-sats">—</span>
+        </div>
+      </div>
+
+      <div class="results" style="margin-bottom:24px;">
+        <div class="result-row">
+          <span class="result-label">Invertiste</span>
+          <span class="result-value" id="res-invested">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Valor hoy</span>
+          <span class="result-value highlight" id="res-value">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Ganancia/pérdida</span>
+          <span class="result-value" id="res-profit">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Rentabilidad</span>
+          <span class="result-value" id="res-pct">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Multiplicador</span>
+          <span class="result-value" id="res-multiplier">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Tiempo transcurrido</span>
+          <span class="result-value" id="res-time">—</span>
+        </div>
+      </div>
+
+      <button class="share-btn" id="share-result">Compartir mi resultado en X</button>
+    </div>
+
+    <p class="disclaimer">* Datos históricos proporcionados por CoinGecko. Rendimientos pasados no garantizan resultados futuros. Esto no es asesoramiento financiero.</p>
+
+    <!-- FAQ -->
+    <section class="faq" style="margin-top:48px;">
+      <h2 class="faq-title">Preguntas frecuentes</h2>
+      <details class="faq-item">
+        <summary>¿Desde qué fecha hay datos disponibles?</summary>
+        <p>Los datos históricos de Bitcoin en euros están disponibles desde abril de 2013, cuando los primeros exchanges europeos comenzaron a operar con suficiente volumen para ofrecer precios fiables.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Los datos incluyen comisiones de compra?</summary>
+        <p>No. El cálculo muestra el resultado teórico basado en el precio de mercado. En la práctica, habrías pagado entre un 0,1% y un 2% de comisión dependiendo del exchange. El resultado real sería ligeramente menor.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Y los impuestos?</summary>
+        <p>El resultado no incluye impuestos. En España, las ganancias por venta de Bitcoin tributan entre el 19% y el 30% en la base del ahorro del IRPF. Usa nuestra <a href="/calculadora-impuestos/" style="color:var(--accent)">calculadora de impuestos</a> para estimar tu carga fiscal.</p>
+      </details>
+    </section>
+
+{{>affiliates}}
+{{>price-info}}
+{{>footer}}
