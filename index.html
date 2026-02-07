@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Primary Meta Tags -->
+  <title>Tu Sueldo en Bitcoin - Calculadora de Ahorro en BTC | 2026</title>
+  <meta name="title" content="Tu Sueldo en Bitcoin - Calculadora de Ahorro en BTC | 2026">
+  <meta name="description" content="Descubre cuántos satoshis vale tu sueldo y cuánto tendrías si hubieras ahorrado en Bitcoin. Calculadora gratuita con proyección de rentabilidad histórica.">
+  <meta name="keywords" content="sueldo en bitcoin, calculadora bitcoin, convertir euros satoshis, DCA bitcoin, ahorrar en bitcoin, salario en BTC, calculadora satoshis">
+  <meta name="author" content="Bitcoin Calculadora">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://bitcoincalculadora.com/">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://bitcoincalculadora.com/">
+  <meta property="og:title" content="Tu Sueldo en Bitcoin - ¿Cuánto dinero has dejado de ganar?">
+  <meta property="og:description" content="Descubre cuántos satoshis vale tu sueldo y cuánto tendrías si hubieras ahorrado en Bitcoin desde hace años.">
+  <meta property="og:image" content="https://bitcoincalculadora.com/assets/og-image.png">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="Bitcoin Calculadora">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://bitcoincalculadora.com/">
+  <meta name="twitter:title" content="Tu Sueldo en Bitcoin - ¿Cuánto dinero has dejado de ganar?">
+  <meta name="twitter:description" content="Calculadora gratuita: convierte tu sueldo a satoshis y descubre cuánto tendrías ahorrando en BTC.">
+  <meta name="twitter:image" content="https://bitcoincalculadora.com/assets/og-image.png">
+
+  <!-- Schema.org markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Tu Sueldo en Bitcoin",
+    "description": "Calculadora para convertir tu sueldo a satoshis y proyectar cuánto tendrías ahorrando en Bitcoin",
+    "url": "https://bitcoincalculadora.com",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR"
+    }
+  }
+  </script>
+
+  <!-- FAQ Schema para SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Cuántos satoshis vale mi sueldo?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "El valor en satoshis de tu sueldo depende del precio actual de Bitcoin. Usa nuestra calculadora para convertir tu salario mensual a satoshis en tiempo real."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué es el DCA en Bitcoin?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "DCA (Dollar Cost Averaging) es una estrategia de inversión que consiste en comprar Bitcoin de forma periódica con una cantidad fija, independientemente del precio. Esto reduce el impacto de la volatilidad."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cuánto porcentaje del sueldo debería ahorrar en Bitcoin?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Los expertos recomiendan invertir solo lo que estés dispuesto a perder. Un rango común es entre el 5% y el 15% del sueldo mensual, dependiendo de tu tolerancia al riesgo."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23f7931a'/><text y='.9em' x='50%' text-anchor='middle' font-size='70' fill='white'>₿</text></svg>">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <main class="container">
+    <header>
+      <svg class="btc-logo" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Logo Bitcoin">
+        <circle cx="32" cy="32" r="32" fill="#f7931a"/>
+        <path d="M45.5 28.4c.6-4-2.4-6.2-6.6-7.6l1.4-5.4-3.3-.8-1.3 5.3c-.9-.2-1.8-.4-2.7-.7l1.3-5.3-3.3-.8-1.4 5.4c-.7-.2-1.4-.3-2.1-.5l-4.5-1.1-.9 3.5s2.4.6 2.4.6c1.3.3 1.6 1.2 1.5 1.9l-1.5 6.2c.1 0 .2 0 .3.1-.1 0-.2-.1-.3-.1l-2.2 8.7c-.2.4-.6 1.1-1.6.8 0 0-2.4-.6-2.4-.6l-1.6 3.8 4.3 1.1c.8.2 1.6.4 2.3.6l-1.4 5.5 3.3.8 1.4-5.5c.9.2 1.8.5 2.7.7l-1.4 5.4 3.3.8 1.4-5.5c5.8 1.1 10.1.7 12-4.6 1.5-4.2-.1-6.7-3.1-8.3 2.2-.5 3.9-2 4.3-5zm-7.7 10.8c-1.1 4.2-8.2 1.9-10.5 1.4l1.9-7.5c2.3.6 9.8 1.7 8.6 6.1zm1.1-10.9c-1 3.9-6.9 1.9-8.8 1.4l1.7-6.8c1.9.5 8.2 1.4 7.1 5.4z" fill="white"/>
+      </svg>
+      <div class="header-text">
+        <h1><a href="/">Bitcoin Calculadora</a></h1>
+        <p class="subtitle">Tu sueldo en Bitcoin</p>
+      </div>
+    </header>
+
+    <!-- Navegación entre calculadoras -->
+    <nav class="nav-calculadoras" aria-label="Calculadoras disponibles">
+      <a href="/" class="nav-link active">💰 Sueldo</a>
+      <a href="/calculadora-dca/" class="nav-link">📈 DCA</a>
+      <a href="/conversor/" class="nav-link">🔄 Conversor</a>
+    </nav>
+
+    <div class="hero-text">
+      <h2>¿Cuánto dinero has dejado de ganar por <span class="accent">no ahorrar en Bitcoin</span>?</h2>
+      <p>Convierte tu salario a satoshis y descubre tu proyección de ahorro.</p>
+    </div>
+
+    <section aria-label="Calculadora de conversión">
+      <div class="input-group">
+        <label class="input-label" for="salary">Tu sueldo mensual neto</label>
+        <div class="input-wrapper">
+          <span class="currency">€</span>
+          <input 
+            type="number" 
+            id="salary" 
+            placeholder="2000" 
+            value="2000"
+            min="0"
+            step="100"
+            aria-describedby="salary-help"
+          >
+        </div>
+      </div>
+
+      <div class="results" role="region" aria-label="Resultados de conversión">
+        <div class="result-row">
+          <span class="result-label">Hoy equivale a</span>
+          <span class="result-value highlight" id="sats" aria-live="polite">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">En Bitcoin</span>
+          <span class="result-value" id="btc" aria-live="polite">—</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="projection" aria-label="Proyección de ahorro">
+      <h2 class="projection-header">Si hubieras empezado a ahorrar...</h2>
+      
+      <div class="projection-controls">
+        <div class="control">
+          <div class="control-label">
+            <label for="years">Hace cuántos años</label>
+            <span class="control-value" id="years-value">5 años</span>
+          </div>
+          <input type="range" id="years" min="1" max="10" value="5" aria-valuemin="1" aria-valuemax="10" aria-valuenow="5">
+        </div>
+        
+        <div class="control">
+          <div class="control-label">
+            <label for="savings">Ahorrando cada mes</label>
+            <span class="control-value" id="savings-value">10%</span>
+          </div>
+          <input type="range" id="savings" min="5" max="50" value="10" step="5" aria-valuemin="5" aria-valuemax="50" aria-valuenow="10">
+        </div>
+      </div>
+
+      <div class="projection-result" role="region" aria-label="Resultado de proyección">
+        <div class="projection-invested">
+          Habrías invertido <span id="total-invested">—</span>
+        </div>
+        <div class="projection-label">Hoy tendrías...</div>
+        <div class="projection-amount" id="projection-total" aria-live="polite">—</div>
+        <div class="projection-btc" id="projection-btc">—</div>
+        <div class="projection-sats" id="projection-sats">—</div>
+        <div class="projection-gain" id="projection-gain" aria-live="polite">—</div>
+      </div>
+
+      <p class="projection-note">
+        * Cálculo basado en la revalorización media histórica de Bitcoin (~50% anual). Rendimientos pasados no garantizan resultados futuros. Esto no es asesoramiento financiero.
+      </p>
+    </section>
+
+    <section class="share-section" aria-label="Compartir resultados">
+      <button class="share-btn" id="share-btn" aria-label="Compartir en Twitter">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+        Compartir mi resultado en X
+      </button>
+    </section>
+
+    <section class="cta-section" aria-label="Hardware wallets recomendados">
+      <p class="cta-label">Protege tus bitcoin con una hardware wallet</p>
+      <div class="cta-links">
+        <a href="https://trezor.io/?ref=bitcoincalculadora" target="_blank" rel="noopener sponsored" class="cta-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="5" y="11" width="14" height="10" rx="2"/>
+            <path d="M12 3a4 4 0 0 0-4 4v4h8V7a4 4 0 0 0-4-4z"/>
+          </svg>
+          Trezor
+        </a>
+        <a href="https://www.ledger.com/?ref=bitcoincalculadora" target="_blank" rel="noopener sponsored" class="cta-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="5" y="11" width="14" height="10" rx="2"/>
+            <path d="M12 3a4 4 0 0 0-4 4v4h8V7a4 4 0 0 0-4-4z"/>
+          </svg>
+          Ledger
+        </a>
+        <a href="https://shiftcrypto.ch/bitbox02/?ref=bitcoincalculadora" target="_blank" rel="noopener sponsored" class="cta-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="5" y="11" width="14" height="10" rx="2"/>
+            <path d="M12 3a4 4 0 0 0-4 4v4h8V7a4 4 0 0 0-4-4z"/>
+          </svg>
+          BitBox
+        </a>
+      </div>
+    </section>
+
+    <div class="price-info">
+      <div class="price-live">
+        <span class="price-dot loading" id="price-dot" aria-hidden="true"></span>
+        <span>1 BTC = <span id="btc-price">cargando...</span></span>
+      </div>
+      <span class="api-source" id="api-source"></span>
+    </div>
+
+    <!-- FAQ Section for SEO -->
+    <section class="faq-section" aria-label="Preguntas frecuentes">
+      <h2>Preguntas frecuentes</h2>
+      
+      <article class="faq-item">
+        <h3>¿Cuántos satoshis vale mi sueldo?</h3>
+        <p>El valor en satoshis de tu sueldo depende del precio actual de Bitcoin. Un satoshi es la unidad más pequeña de Bitcoin (0.00000001 BTC). Usa nuestra calculadora para convertir tu salario mensual a satoshis en tiempo real.</p>
+      </article>
+      
+      <article class="faq-item">
+        <h3>¿Qué es el DCA en Bitcoin?</h3>
+        <p>DCA (Dollar Cost Averaging) es una estrategia de inversión que consiste en comprar Bitcoin de forma periódica con una cantidad fija, independientemente del precio. Esto reduce el impacto de la volatilidad y elimina el estrés de intentar "comprar en el momento perfecto".</p>
+      </article>
+      
+      <article class="faq-item">
+        <h3>¿Qué porcentaje del sueldo debería ahorrar en Bitcoin?</h3>
+        <p>Los expertos recomiendan invertir solo lo que estés dispuesto a perder. Un rango común es entre el 5% y el 15% del sueldo mensual, dependiendo de tu situación financiera y tolerancia al riesgo. Nunca inviertas dinero que necesites a corto plazo.</p>
+      </article>
+    </section>
+
+    <footer>
+      <p>
+        Calculadora gratuita · No almacenamos ningún dato<br>
+        Precios en tiempo real · <a href="#" id="refresh-price">Actualizar precio</a><br><br>
+        © 2026 <a href="/">Bitcoin Calculadora</a> · Esto no es asesoramiento financiero
+      </p>
+    </footer>
+  </main>
+
+  <script src="/js/main.js"></script>
+  <script>
+    /**
+     * Calculadora Tu Sueldo en Bitcoin
+     */
+    const ANNUAL_GROWTH_RATE = 0.50;
+    let projectionData = {};
+
+    /**
+     * Cálculo principal
+     */
+    function calculate() {
+      const salary = parseFloat(document.getElementById('salary').value) || 0;
+      const price = getBtcPrice();
+      
+      if (!price || salary <= 0) {
+        document.getElementById('sats').textContent = '—';
+        document.getElementById('btc').textContent = '—';
+        return;
+      }
+
+      const btcAmount = eurToBtc(salary);
+      const sats = eurToSats(salary);
+
+      document.getElementById('sats').textContent = formatSats(sats);
+      document.getElementById('btc').textContent = formatBtc(btcAmount);
+
+      calculateProjection();
+    }
+
+    /**
+     * Cálculo de proyección con revalorización
+     */
+    function calculateProjection() {
+      const salary = parseFloat(document.getElementById('salary').value) || 0;
+      const savingsPercent = parseInt(document.getElementById('savings').value);
+      const years = parseInt(document.getElementById('years').value);
+      const price = getBtcPrice();
+
+      if (!price || salary <= 0) return;
+
+      const monthlySavings = salary * (savingsPercent / 100);
+      const totalMonths = years * 12;
+      const totalInvested = monthlySavings * totalMonths;
+      
+      const monthlyRate = Math.pow(1 + ANNUAL_GROWTH_RATE, 1/12) - 1;
+      
+      let totalValue = 0;
+      for (let month = 0; month < totalMonths; month++) {
+        const monthsGrowing = totalMonths - month;
+        const valueOfThisContribution = monthlySavings * Math.pow(1 + monthlyRate, monthsGrowing);
+        totalValue += valueOfThisContribution;
+      }
+      
+      const totalBtc = totalValue / price;
+      const totalSats = Math.round(totalBtc * 100000000);
+      
+      const profit = totalValue - totalInvested;
+      const profitPercent = ((totalValue / totalInvested) - 1) * 100;
+
+      // Guardar datos para compartir
+      projectionData = {
+        salary,
+        savingsPercent,
+        years,
+        totalInvested,
+        totalValue,
+        totalSats,
+        profitPercent
+      };
+
+      // Actualizar UI
+      document.getElementById('total-invested').textContent = formatEur(totalInvested);
+      document.getElementById('projection-total').textContent = formatEur(totalValue);
+      document.getElementById('projection-btc').textContent = `≈ ${formatBtc(totalBtc)}`;
+      document.getElementById('projection-sats').textContent = formatSatsFull(totalSats);
+      document.getElementById('projection-gain').textContent = 
+        `Beneficio total: +${formatEur(profit)} (+${profitPercent.toFixed(0)}%)`;
+    }
+
+    /**
+     * Compartir en Twitter
+     */
+    function shareResult() {
+      const { savingsPercent, years, totalValue, profitPercent } = projectionData;
+      
+      const text = `Si hubiera ahorrado ${savingsPercent}% de mi sueldo en #Bitcoin hace ${years} años, hoy tendría ${formatEur(totalValue)} (+${profitPercent.toFixed(0)}%) 🤯
+
+Calcula el tuyo:`;
+      
+      shareOnTwitter(text);
+    }
+
+    // Event listeners
+    document.getElementById('salary').addEventListener('input', calculate);
+    
+    document.getElementById('savings').addEventListener('input', (e) => {
+      document.getElementById('savings-value').textContent = e.target.value + '%';
+      e.target.setAttribute('aria-valuenow', e.target.value);
+      calculateProjection();
+    });
+
+    document.getElementById('years').addEventListener('input', (e) => {
+      const years = e.target.value;
+      document.getElementById('years-value').textContent = years + (years === '1' ? ' año' : ' años');
+      e.target.setAttribute('aria-valuenow', years);
+      calculateProjection();
+    });
+
+    document.getElementById('share-btn').addEventListener('click', shareResult);
+
+    // Escuchar actualizaciones de precio
+    window.addEventListener('btcPriceUpdated', calculate);
+
+    // Inicializar
+    initPriceUpdates();
+  </script>
+</body>
+</html>

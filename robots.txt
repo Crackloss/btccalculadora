@@ -1,0 +1,6 @@
+# robots.txt para bitcoincalculadora.com
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://bitcoincalculadora.com/sitemap.xml
