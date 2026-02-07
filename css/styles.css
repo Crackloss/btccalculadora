@@ -406,8 +406,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .cta-link {
-  flex: 1;
-  max-width: calc(33.333% - 8px);
+  flex: 1 1 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -421,7 +420,7 @@ input[type="range"]::-moz-range-thumb {
   font-size: 0.8125rem;
   font-weight: 500;
   transition: all 0.15s ease;
-  }
+}
 
 .cta-link:hover {
   background: var(--accent-dim);
