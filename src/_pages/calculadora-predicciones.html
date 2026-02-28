@@ -1,0 +1,336 @@
+---
+layout: tool
+title: Calculadora de Predicciones BTC/USDT - Simula Compra y Venta | 2026
+description: Simula una operación de compra y venta de Bitcoin con tus saldos de BTC y USDT. Incluye comisiones, slippage, beneficio y saldo final.
+keywords: calculadora trading bitcoin, simulador btc usdt, prediccion bitcoin, beneficio trading btc, calculadora compra venta btc
+canonical: /calculadora-predicciones/
+subtitle: Calculadora de predicciones
+active_predicciones: true
+og_title: Calculadora de Predicciones BTC/USDT
+og_description: Simula escenarios de compra y venta de Bitcoin con comisiones y slippage.
+schema: |
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Calculadora de Predicciones BTC/USDT",
+    "description": "Simulador de compra y venta de Bitcoin con beneficio y saldo final en BTC y USDT",
+    "url": "https://bitcoincalculadora.com/calculadora-predicciones/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+  }
+  </script>
+extra_styles: |
+    .pred-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+    .unit-tag { padding-left: 14px; font-size: 0.875rem; font-weight: 500; color: var(--text-secondary); white-space: nowrap; }
+    .calc-btn { width: 100%; padding: 14px; background: var(--accent); color: #000; font-weight: 600; border: none; border-radius: 12px; cursor: pointer; transition: opacity 0.2s; margin-bottom: 12px; }
+    .calc-btn:hover { opacity: 0.9; }
+    .error-msg { color: var(--red); font-size: 0.875rem; padding: 12px; background: rgba(239,68,68,0.1); border-radius: 8px; margin-bottom: 16px; display: none; }
+    .hint { font-size: 0.75rem; color: var(--text-secondary); margin-top: 6px; }
+    .positive { color: var(--green) !important; }
+    .negative { color: var(--red) !important; }
+    .share-btn { margin-top: 12px; }
+    @media (max-width: 768px) {
+      .pred-grid { grid-template-columns: 1fr; }
+    }
+extra_scripts: |
+  <script>
+    const errorDiv = document.getElementById('pred-error');
+    const resultsDiv = document.getElementById('pred-results');
+    const allInputs = document.querySelectorAll('.pred-input');
+    let latestResult = null;
+
+    function toNumber(id) {
+      return parseFloat(document.getElementById(id).value);
+    }
+
+    function formatUsdt(num) {
+      return num.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' USDT';
+    }
+
+    function formatBtcAmount(num) {
+      return num.toLocaleString('es-ES', { minimumFractionDigits: 8, maximumFractionDigits: 8 }) + ' BTC';
+    }
+
+    function showError(message) {
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+      resultsDiv.style.display = 'none';
+    }
+
+    function clearError() {
+      errorDiv.style.display = 'none';
+    }
+
+    function setSignedClass(el, value) {
+      el.classList.remove('positive', 'negative');
+      el.classList.add(value >= 0 ? 'positive' : 'negative');
+    }
+
+    function calculatePrediction() {
+      const btcInitial = toNumber('btc-inicial');
+      const usdtInitial = toNumber('usdt-inicial');
+      const buyPrice = toNumber('precio-compra');
+      const usdtToBuy = toNumber('usdt-compra');
+      const sellPrice = toNumber('precio-venta');
+      const btcToSell = toNumber('btc-vender');
+
+      const buyFeePct = toNumber('fee-compra') || 0;
+      const sellFeePct = toNumber('fee-venta') || 0;
+      const buySlippagePct = toNumber('slippage-compra') || 0;
+      const sellSlippagePct = toNumber('slippage-venta') || 0;
+
+      if ([btcInitial, usdtInitial, buyPrice, usdtToBuy, sellPrice, btcToSell].some(v => isNaN(v))) {
+        showError('Completa todos los campos obligatorios.');
+        return;
+      }
+
+      if (btcInitial < 0 || usdtInitial < 0 || buyPrice <= 0 || usdtToBuy <= 0 || sellPrice <= 0 || btcToSell <= 0) {
+        showError('Revisa los valores: no puede haber negativos y los precios/importes deben ser mayores que 0.');
+        return;
+      }
+
+      if (usdtToBuy > usdtInitial) {
+        showError('No puedes invertir más USDT de los que tienes.');
+        return;
+      }
+
+      const feeValues = [buyFeePct, sellFeePct, buySlippagePct, sellSlippagePct];
+      if (feeValues.some(v => v < 0 || v >= 100)) {
+        showError('Comisiones y slippage deben estar entre 0% y 99.99%.');
+        return;
+      }
+
+      const buyPriceEffective = buyPrice * (1 + (buySlippagePct / 100));
+      const usdtBuyFee = usdtToBuy * (buyFeePct / 100);
+      const usdtUsedForBtc = usdtToBuy - usdtBuyFee;
+      if (usdtUsedForBtc <= 0) {
+        showError('La comisión de compra deja la inversión neta en 0. Revisa los valores.');
+        return;
+      }
+
+      const btcBought = usdtUsedForBtc / buyPriceEffective;
+      const btcAfterBuy = btcInitial + btcBought;
+      const usdtAfterBuy = usdtInitial - usdtToBuy;
+
+      if (btcToSell > btcAfterBuy) {
+        showError('No puedes vender más BTC de los que tendrías tras la compra.');
+        return;
+      }
+
+      const sellPriceEffective = sellPrice * (1 - (sellSlippagePct / 100));
+      if (sellPriceEffective <= 0) {
+        showError('El slippage de venta deja el precio efectivo en 0. Revisa los valores.');
+        return;
+      }
+
+      const usdtGrossFromSell = btcToSell * sellPriceEffective;
+      const usdtSellFee = usdtGrossFromSell * (sellFeePct / 100);
+      const usdtNetFromSell = usdtGrossFromSell - usdtSellFee;
+
+      const profit = usdtNetFromSell - usdtToBuy;
+      const roi = (profit / usdtToBuy) * 100;
+
+      const usdtFinal = usdtAfterBuy + usdtNetFromSell;
+      const btcFinal = btcAfterBuy - btcToSell;
+
+      document.getElementById('res-btc-comprado').textContent = formatBtcAmount(btcBought);
+      document.getElementById('res-usdt-venta').textContent = formatUsdt(usdtNetFromSell);
+      document.getElementById('res-beneficio').textContent = (profit >= 0 ? '+' : '') + formatUsdt(profit);
+      document.getElementById('res-roi').textContent = (roi >= 0 ? '+' : '') + roi.toFixed(2) + '%';
+
+      document.getElementById('res-usdt-restante').textContent = formatUsdt(usdtAfterBuy);
+      document.getElementById('res-usdt-final').textContent = formatUsdt(usdtFinal);
+      document.getElementById('res-btc-tras-compra').textContent = formatBtcAmount(btcAfterBuy);
+      document.getElementById('res-btc-final').textContent = formatBtcAmount(btcFinal);
+
+      document.getElementById('res-precio-compra-ef').textContent = formatUsdt(buyPriceEffective);
+      document.getElementById('res-precio-venta-ef').textContent = formatUsdt(sellPriceEffective);
+      document.getElementById('res-fees-total').textContent = formatUsdt(usdtBuyFee + usdtSellFee);
+
+      setSignedClass(document.getElementById('res-beneficio'), profit);
+      setSignedClass(document.getElementById('res-roi'), roi);
+
+      latestResult = {
+        buyPrice,
+        sellPrice,
+        usdtToBuy,
+        btcToSell,
+        usdtNetFromSell,
+        profit,
+        roi
+      };
+
+      clearError();
+      resultsDiv.style.display = 'block';
+    }
+
+    function sharePrediction() {
+      if (!latestResult) return;
+      const text = `Si comprara BTC con ${formatUsdt(latestResult.usdtToBuy)} y vendiera ${latestResult.btcToSell.toFixed(6)} BTC de ${formatUsdt(latestResult.buyPrice)} a ${formatUsdt(latestResult.sellPrice)}, obtendría ${formatUsdt(latestResult.usdtNetFromSell)} (${latestResult.roi >= 0 ? '+' : ''}${latestResult.roi.toFixed(1)}%).\n\nSimúlalo aquí:`;
+      shareOnTwitter(text, 'https://bitcoincalculadora.com/calculadora-predicciones/');
+    }
+
+    document.getElementById('calculate-btn').addEventListener('click', calculatePrediction);
+    document.getElementById('share-pred').addEventListener('click', sharePrediction);
+    allInputs.forEach(input => input.addEventListener('input', calculatePrediction));
+
+    initPriceUpdates();
+  </script>
+---
+
+    <div class="hero-text">
+      <h2>Calculadora de <span class="accent">predicciones BTC/USDT</span></h2>
+      <p>Simula una compra y una venta con comisiones y slippage para ver beneficio y saldo final.</p>
+    </div>
+
+    <section aria-label="Parámetros de simulación">
+      <div class="pred-grid">
+        <div class="input-group" style="margin-bottom:0;">
+          <label class="input-label" for="btc-inicial">1) BTC que tienes ahora</label>
+          <div class="input-wrapper">
+            <span class="unit-tag">BTC</span>
+            <input class="pred-input" type="number" id="btc-inicial" value="0.20000000" min="0" step="0.00000001">
+          </div>
+        </div>
+        <div class="input-group" style="margin-bottom:0;">
+          <label class="input-label" for="usdt-inicial">2) USDT que tienes ahora</label>
+          <div class="input-wrapper">
+            <span class="unit-tag">USDT</span>
+            <input class="pred-input" type="number" id="usdt-inicial" value="5000" min="0" step="0.01">
+          </div>
+        </div>
+        <div class="input-group" style="margin-bottom:0;">
+          <label class="input-label" for="precio-compra">3) Precio de compra</label>
+          <div class="input-wrapper">
+            <span class="unit-tag">USDT</span>
+            <input class="pred-input" type="number" id="precio-compra" value="80000" min="0.01" step="0.01">
+          </div>
+          <p class="hint">Precio por 1 BTC</p>
+        </div>
+        <div class="input-group" style="margin-bottom:0;">
+          <label class="input-label" for="usdt-compra">4) USDT que usarías para comprar</label>
+          <div class="input-wrapper">
+            <span class="unit-tag">USDT</span>
+            <input class="pred-input" type="number" id="usdt-compra" value="2000" min="0.01" step="0.01">
+          </div>
+        </div>
+        <div class="input-group" style="margin-bottom:0;">
+          <label class="input-label" for="precio-venta">5) Precio de venta</label>
+          <div class="input-wrapper">
+            <span class="unit-tag">USDT</span>
+            <input class="pred-input" type="number" id="precio-venta" value="95000" min="0.01" step="0.01">
+          </div>
+          <p class="hint">Precio por 1 BTC</p>
+        </div>
+        <div class="input-group" style="margin-bottom:0;">
+          <label class="input-label" for="btc-vender">6) BTC que venderías</label>
+          <div class="input-wrapper">
+            <span class="unit-tag">BTC</span>
+            <input class="pred-input" type="number" id="btc-vender" value="0.02500000" min="0.00000001" step="0.00000001">
+          </div>
+        </div>
+      </div>
+
+      <h3 style="font-size:0.95rem;font-weight:500;margin-bottom:12px;">Costes de ejecución (opcional)</h3>
+      <div class="pred-grid">
+        <div class="input-group" style="margin-bottom:0;">
+          <label class="input-label" for="fee-compra">Comisión compra (%)</label>
+          <div class="input-wrapper">
+            <span class="unit-tag">%</span>
+            <input class="pred-input" type="number" id="fee-compra" value="0.10" min="0" step="0.01">
+          </div>
+        </div>
+        <div class="input-group" style="margin-bottom:0;">
+          <label class="input-label" for="fee-venta">Comisión venta (%)</label>
+          <div class="input-wrapper">
+            <span class="unit-tag">%</span>
+            <input class="pred-input" type="number" id="fee-venta" value="0.10" min="0" step="0.01">
+          </div>
+        </div>
+        <div class="input-group" style="margin-bottom:0;">
+          <label class="input-label" for="slippage-compra">Slippage compra (%)</label>
+          <div class="input-wrapper">
+            <span class="unit-tag">%</span>
+            <input class="pred-input" type="number" id="slippage-compra" value="0.10" min="0" step="0.01">
+          </div>
+        </div>
+        <div class="input-group" style="margin-bottom:0;">
+          <label class="input-label" for="slippage-venta">Slippage venta (%)</label>
+          <div class="input-wrapper">
+            <span class="unit-tag">%</span>
+            <input class="pred-input" type="number" id="slippage-venta" value="0.10" min="0" step="0.01">
+          </div>
+        </div>
+      </div>
+
+      <button class="calc-btn" id="calculate-btn">Calcular escenario</button>
+      <div id="pred-error" class="error-msg"></div>
+    </section>
+
+    <section id="pred-results" style="display:none;" aria-label="Resultados de la simulación">
+      <div class="results" style="margin-bottom:16px;">
+        <div class="result-row">
+          <span class="result-label">BTC comprados (neto)</span>
+          <span class="result-value" id="res-btc-comprado">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">USDT obtenidos por la venta (neto)</span>
+          <span class="result-value highlight" id="res-usdt-venta">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Beneficio respecto a la inversión</span>
+          <span class="result-value" id="res-beneficio">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">ROI de la operación</span>
+          <span class="result-value" id="res-roi">—</span>
+        </div>
+      </div>
+
+      <div class="results" style="margin-bottom:16px;">
+        <div class="result-row">
+          <span class="result-label">USDT restantes tras la compra</span>
+          <span class="result-value" id="res-usdt-restante">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">USDT totales finales</span>
+          <span class="result-value highlight" id="res-usdt-final">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">BTC totales tras la compra</span>
+          <span class="result-value" id="res-btc-tras-compra">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">BTC finales tras la venta</span>
+          <span class="result-value highlight" id="res-btc-final">—</span>
+        </div>
+      </div>
+
+      <div class="results" style="margin-bottom:16px;">
+        <div class="result-row">
+          <span class="result-label">Precio efectivo de compra</span>
+          <span class="result-value" id="res-precio-compra-ef">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Precio efectivo de venta</span>
+          <span class="result-value" id="res-precio-venta-ef">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Comisiones totales pagadas</span>
+          <span class="result-value" id="res-fees-total">—</span>
+        </div>
+      </div>
+
+      <button class="share-btn" id="share-pred">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        Compartir simulación en X
+      </button>
+    </section>
+
+    <p class="disclaimer" style="margin-top:24px;">* Simulación orientativa. No incluye impuestos, financiación, ni cambios de spread en tiempo real. No es asesoramiento financiero.</p>
+
+{{>affiliates}}
+{{>price-info}}
+{{>footer}}

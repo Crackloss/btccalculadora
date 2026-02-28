@@ -18,6 +18,7 @@ src/
     index.html        ← Calculadora Sueldo (home)
     calculadora-dca.html
     conversor.html
+    calculadora-predicciones.html
     blog/
       index.html
       que-es-dca-bitcoin.html
@@ -110,6 +111,7 @@ Alternativamente, puedes copiar el contenido de `docs/` a la raíz del repo si p
 | `{{active_sueldo}}` | `true` para destacar "Sueldo" en nav |
 | `{{active_dca}}` | `true` para destacar "DCA" en nav |
 | `{{active_conversor}}` | `true` para destacar "Conversor" en nav |
+| `{{active_predicciones}}` | `true` para destacar "Predicciones" en nav |
 | `{{active_blog}}` | `true` para destacar "Blog" en nav |
 | `{{extra_styles}}` | CSS inline adicional (para estilos específicos de página) |
 | `{{extra_scripts}}` | JS adicional al final del body |
