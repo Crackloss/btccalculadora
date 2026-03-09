@@ -107,7 +107,7 @@ def render_template(template, context):
             # Recursively render the include with same context
             return render_template(include_content, context)
         else:
-            print(f'  ⚠️  Include not found: {include_name}')
+            print(f'  WARNING: Include not found: {include_name}')
             return f'<!-- include {include_name} not found -->'
     
     template = re.sub(r'\{\{>\s*(.+?)\s*\}\}', resolve_include, template)
@@ -273,6 +273,8 @@ def build_page(page_path, relative_path):
     
     # Set up context with all meta
     context = dict(meta)
+    context.setdefault('og_title', context.get('title', ''))
+    context.setdefault('og_description', context.get('description', ''))
     
     # Pre-render the body content (resolve includes like {{>affiliates}} in content)
     rendered_body = render_template(body, context)
@@ -290,7 +292,7 @@ def build_page(page_path, relative_path):
 
 def build():
     """Full build: process all pages, copy static assets."""
-    print('🔨 Building Bitcoin Calculadora...\n')
+    print('Building Bitcoin Calculadora...\n')
     
     # Clean output
     if OUTPUT_DIR.exists():
@@ -303,20 +305,20 @@ def build():
         if src_static.exists():
             dst_static = OUTPUT_DIR / static_dir
             shutil.copytree(src_static, dst_static)
-            print(f'  📁 Copied {static_dir}/')
+            print(f'  Copied {static_dir}/')
     
     # Copy CNAME if exists
     cname = SRC_DIR / 'CNAME'
     if cname.exists():
         shutil.copy2(cname, OUTPUT_DIR / 'CNAME')
-        print('  📄 Copied CNAME')
+        print('  Copied CNAME')
     
     # Copy robots.txt and sitemap.xml if they exist
     for extra_file in ['robots.txt', 'sitemap.xml']:
         src_file = SRC_DIR / extra_file
         if src_file.exists():
             shutil.copy2(src_file, OUTPUT_DIR / extra_file)
-            print(f'  📄 Copied {extra_file}')
+            print(f'  Copied {extra_file}')
     
     # Build pages
     page_count = 0
@@ -344,9 +346,9 @@ def build():
         out_path.write_text(rendered, encoding='utf-8')
         
         page_count += 1
-        print(f'  ✅ {relative} → {out_path.relative_to(OUTPUT_DIR)}')
+        print(f'  OK {relative} -> {out_path.relative_to(OUTPUT_DIR)}')
     
-    print(f'\n🎉 Build complete! {page_count} pages generated in docs/')
+    print(f'\nBuild complete! {page_count} pages generated in docs/')
 
 
 if __name__ == '__main__':

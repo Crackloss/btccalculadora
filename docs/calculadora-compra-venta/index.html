@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Primary Meta Tags -->
+  <title>Calculadora Compra/Venta Bitcoin - Beneficio en USDT | 2026</title>
+  <meta name="title" content="Calculadora Compra/Venta Bitcoin - Beneficio en USDT | 2026">
+  <meta name="description" content="Calcula cuánto ganas o pierdes al comprar Bitcoin con USDT y venderlo a otro precio. Simula ventas totales o parciales en segundos.">
+  <meta name="keywords" content="calculadora compra venta bitcoin, beneficio bitcoin usdt, vender btc usdt, calculadora pnl bitcoin, rentabilidad bitcoin">
+  <meta name="author" content="Bitcoin Calculadora">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://bitcoincalculadora.com/calculadora-compra-venta/">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://bitcoincalculadora.com/calculadora-compra-venta/">
+  <meta property="og:title" content="Calculadora Compra/Venta Bitcoin - Beneficio en USDT">
+  <meta property="og:description" content="Descubre tu beneficio o pérdida al vender BTC a otro precio. Soporta ventas parciales y cálculo inmediato.">
+  <meta property="og:image" content="https://bitcoincalculadora.com/assets/og-image.png">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="Bitcoin Calculadora">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://bitcoincalculadora.com/calculadora-compra-venta/">
+  <meta name="twitter:title" content="Calculadora Compra/Venta Bitcoin - Beneficio en USDT">
+  <meta name="twitter:description" content="Descubre tu beneficio o pérdida al vender BTC a otro precio. Soporta ventas parciales y cálculo inmediato.">
+  <meta name="twitter:image" content="https://bitcoincalculadora.com/assets/og-image.png">
+
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Calculadora Compra/Venta Bitcoin",
+    "description": "Calculadora para estimar beneficio o pérdida al comprar y vender Bitcoin con USDT",
+    "url": "https://bitcoincalculadora.com/calculadora-compra-venta/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23f7931a'/><text y='.9em' x='50%' text-anchor='middle' font-size='70' fill='white'>₿</text></svg>">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/styles.css">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZSPP1PNLP1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZSPP1PNLP1');
+  </script>
+
+
+  <style>
+.compact-group { margin-bottom: 24px; }
+    .helper-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: -12px 0 24px; }
+    .helper-text { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.5; }
+    .mini-btn { background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 0.75rem; padding: 6px 12px; transition: all 0.2s; white-space: nowrap; }
+    .mini-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .mini-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .status-note { font-size: 0.75rem; color: var(--text-secondary); margin-top: 16px; line-height: 1.6; }
+    .warning-note { display: none; color: var(--red); font-size: 0.8125rem; padding: 12px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 8px; margin-bottom: 20px; }
+    .positive { color: var(--green) !important; }
+    .negative { color: var(--red) !important; }
+    .share-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    @media (max-width: 480px) {
+      .helper-row { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+
+</head>
+<body>
+
+  <div class="site-nav">
+    <div class="nav-inner">
+      <div class="nav-top">
+        <a href="/" class="nav-brand">
+          <svg class="btc-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50" fill="#f7931a"/><path d="M67.8 44.3c1-6.6-4-10.2-10.9-12.5l2.2-8.9-5.4-1.3-2.2 8.7c-1.4-.4-2.9-.7-4.3-1l2.2-8.7-5.4-1.3-2.2 8.9c-1.2-.3-2.3-.5-3.4-.8l-7.5-1.9-1.4 5.8s4 .9 3.9 1c2.2.5 2.6 2 2.5 3.1l-2.5 10.2c.2 0 .3.1.5.1l-.5-.1-3.6 14.3c-.3.7-.9 1.7-2.5 1.3.1.1-3.9-1-3.9-1L22 66l7 1.7c1.3.3 2.6.7 3.9 1l-2.3 9 5.4 1.3 2.2-8.9c1.5.4 2.9.8 4.3 1.1l-2.2 8.8 5.4 1.3 2.3-9c9.3 1.8 16.3.7 19.3-7.4 2.4-6.5-.1-10.3-4.8-12.7 3.4-.8 6-3.1 6.7-7.9zM58 55c-1.7 6.8-13.2 3.1-16.9 2.2l3-12.1c3.7.9 15.7 2.8 13.9 9.9zm1.7-17.5c-1.6 6.2-11.1 3-14.2 2.3l2.7-11c3.1.8 13.2 2.2 11.5 8.7z" fill="#fff"/></svg>
+          <span>Bitcoin Calculadora</span>
+          <span class="nav-subtitle">Compra/Venta BTC</span>
+        </a>
+        <button class="nav-hamburger" onclick="document.querySelector('.nav-calculadoras').classList.toggle('open');this.textContent=this.textContent==='☰'?'✕':'☰'" aria-label="Menú">☰</button>
+      </div>
+    <!-- Navegación entre calculadoras -->
+    <nav class="nav-calculadoras" aria-label="Calculadoras disponibles">
+      <a href="/" class="nav-link ">💰 Sueldo</a>
+      <a href="/calculadora-dca/" class="nav-link ">📈 DCA</a>
+      <a href="/conversor/" class="nav-link ">🔄 Conversor</a>
+      <a href="/calculadora-compra-venta/" class="nav-link active">💱 Compra/Venta</a>
+      <a href="/calculadora-predicciones/" class="nav-link ">🔮 Predicciones</a>
+      <a href="/si-hubiera-comprado/" class="nav-link ">🕰️ Si hubiera</a>
+      <a href="/calculadora-impuestos/" class="nav-link ">🧾 Impuestos</a>
+      <a href="/calculadora-fees/" class="nav-link ">⛏️ Fees</a>
+      <a href="/comparador-exchanges/" class="nav-link ">🏦 Exchanges</a>
+      <a href="/calculadora-herencia/" class="nav-link ">📜 Herencia</a>
+      <a href="/blog/" class="nav-link ">📝 Blog</a>
+    </nav>
+
+    </div>
+  </div>
+
+  <main class="container">
+
+<div class="hero-text">
+      <h2>Calcula tu beneficio al <span class="accent">comprar y vender Bitcoin</span></h2>
+      <p>Introduce tu compra en USDT y simula cuánto ganarías o perderías al vender tu BTC a otro precio.</p>
+    </div>
+
+    <section aria-label="Datos de compra">
+      <div class="input-group compact-group">
+        <label class="input-label" for="usdt-invested">USDT invertidos</label>
+        <div class="input-wrapper">
+          <input type="number" id="usdt-invested" value="1000" min="0" step="0.01" placeholder="1000">
+        </div>
+      </div>
+
+      <div class="input-group compact-group">
+        <label class="input-label" for="buy-price">Precio de compra de BTC</label>
+        <div class="input-wrapper">
+          <input type="number" id="buy-price" value="70000" min="0" step="0.01" placeholder="70000">
+        </div>
+      </div>
+
+      <div class="results" aria-label="Resultado de compra">
+        <div class="result-row">
+          <span class="result-label">BTC obtenidos</span>
+          <span class="result-value highlight" id="btc-obtained" aria-live="polite">—</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="projection" aria-label="Datos de venta">
+      <h2 class="projection-header">Simula la venta</h2>
+
+      <div id="sale-warning" class="warning-note"></div>
+
+      <div class="input-group compact-group">
+        <label class="input-label" for="btc-to-sell">BTC a vender</label>
+        <div class="input-wrapper">
+          <input type="number" id="btc-to-sell" min="0" step="0.00000001" placeholder="0.00000000">
+        </div>
+      </div>
+
+      <div class="helper-row">
+        <p class="helper-text">Máximo disponible: <span id="btc-available">—</span></p>
+        <button class="mini-btn" id="sell-all-btn" type="button">Vender todo</button>
+      </div>
+
+      <div class="input-group compact-group">
+        <label class="input-label" for="sell-price">Precio de venta de BTC</label>
+        <div class="input-wrapper">
+          <input type="number" id="sell-price" value="85000" min="0" step="0.01" placeholder="85000">
+        </div>
+      </div>
+
+      <div class="results" aria-label="Resultados de venta">
+        <div class="result-row">
+          <span class="result-label">Valor final en USDT</span>
+          <span class="result-value highlight" id="final-usdt" aria-live="polite">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Beneficio / pérdida en USDT</span>
+          <span class="result-value" id="profit-usdt" aria-live="polite">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Rentabilidad en %</span>
+          <span class="result-value" id="return-pct" aria-live="polite">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Cambio del precio de BTC en %</span>
+          <span class="result-value" id="price-change-pct" aria-live="polite">—</span>
+        </div>
+      </div>
+
+      <p class="status-note" id="sale-context">El beneficio se calcula sobre el coste de adquisición del BTC que vas a vender.</p>
+      <p class="status-note">Sin comisiones, la rentabilidad en % coincide con el cambio del precio de BTC.</p>
+    </section>
+
+    <section class="share-section">
+      <button class="share-btn" id="share-btn-trade" disabled>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        Compartir mi simulación en X
+      </button>
+    </section>
+
+    <section class="cta-section" aria-label="Hardware wallets recomendados">
+      <p class="cta-label">Protege tus bitcoin con una hardware wallet</p>
+      <div class="cta-row">
+        <a href="https://affil.trezor.io/SH10j" target="_blank" rel="noopener sponsored" class="cta-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="5" y="11" width="14" height="10" rx="2"/>
+            <path d="M12 3a4 4 0 0 0-4 4v4h8V7a4 4 0 0 0-4-4z"/>
+          </svg>
+          Trezor
+        </a>
+        <a href="https://shop.ledger.com/?r=ab735c3bd51c" target="_blank" rel="noopener sponsored" class="cta-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="5" y="11" width="14" height="10" rx="2"/>
+            <path d="M12 3a4 4 0 0 0-4 4v4h8V7a4 4 0 0 0-4-4z"/>
+          </svg>
+          Ledger
+        </a>
+        <a href="https://bitbox.swiss/bitbox02/nova/?ref=kwktktar" target="_blank" rel="noopener sponsored" class="cta-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="5" y="11" width="14" height="10" rx="2"/>
+            <path d="M12 3a4 4 0 0 0-4 4v4h8V7a4 4 0 0 0-4-4z"/>
+          </svg>
+          BitBox
+        </a>
+      </div>
+      <div class="cta-row">
+        <a href="https://store.blockstream.com/collections/physical-storage" target="_blank" rel="noopener sponsored" class="cta-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="5" y="11" width="14" height="10" rx="2"/>
+            <path d="M12 3a4 4 0 0 0-4 4v4h8V7a4 4 0 0 0-4-4z"/>
+          </svg>
+          Blockstream
+        </a>
+      </div>
+    </section>
+
+
+    <div class="price-info">
+      <div class="price-live">
+        <span class="price-dot loading" id="price-dot" aria-hidden="true"></span>
+        <span>1 BTC = <span id="btc-price">cargando...</span></span>
+      </div>
+      <span class="api-source" id="api-source"></span>
+    </div>
+
+
+    <section class="faq-section">
+      <h2>Preguntas frecuentes</h2>
+      <article class="faq-item">
+        <h3>¿El beneficio se calcula sobre toda la compra o solo sobre lo que vendo?</h3>
+        <p>Sobre el BTC que vendes. Si compraste 0,02 BTC pero solo vendes 0,01 BTC, la calculadora usa únicamente el coste proporcional de ese 0,01 BTC para calcular tu ganancia o pérdida.</p>
+      </article>
+      <article class="faq-item">
+        <h3>¿Por qué la rentabilidad y el cambio de precio salen iguales?</h3>
+        <p>Porque esta versión no incluye comisiones ni deslizamiento. Si compras BTC a un precio y lo vendes a otro, el porcentaje de ganancia coincide con el cambio porcentual del precio.</p>
+      </article>
+      <article class="faq-item">
+        <h3>¿Incluye fees o impuestos?</h3>
+        <p>No. El cálculo es bruto y solo usa precio de compra, cantidad de BTC vendida y precio de venta. Si quieres estimar impuestos, puedes usar también nuestra calculadora de impuestos.</p>
+      </article>
+    </section>
+
+    <footer>
+      <p>
+        Calculadora gratuita · No almacenamos ningún dato<br>
+        Precios en tiempo real · <a href="#" id="refresh-price">Actualizar precio</a><br><br>
+        © 2026 <a href="/">Bitcoin Calculadora</a> · Esto no es asesoramiento financiero
+      </p>
+    </footer>
+
+
+  </main>
+
+  <script src="/js/main.js"></script>
+
+<script>
+    const usdtInvestedInput = document.getElementById('usdt-invested');
+    const buyPriceInput = document.getElementById('buy-price');
+    const btcObtainedOutput = document.getElementById('btc-obtained');
+    const btcAvailableOutput = document.getElementById('btc-available');
+    const btcToSellInput = document.getElementById('btc-to-sell');
+    const sellPriceInput = document.getElementById('sell-price');
+    const finalUsdtOutput = document.getElementById('final-usdt');
+    const profitOutput = document.getElementById('profit-usdt');
+    const returnOutput = document.getElementById('return-pct');
+    const priceChangeOutput = document.getElementById('price-change-pct');
+    const saleContextOutput = document.getElementById('sale-context');
+    const saleWarningOutput = document.getElementById('sale-warning');
+    const sellAllBtn = document.getElementById('sell-all-btn');
+    const shareBtn = document.getElementById('share-btn-trade');
+
+    let tradeData = null;
+    let previousBtcObtained = 0;
+    let btcSellManuallyEdited = false;
+
+    function nearlyEqual(a, b, epsilon = 1e-8) {
+      return Math.abs(a - b) <= epsilon * Math.max(1, Math.abs(a), Math.abs(b));
+    }
+
+    function formatUsdt(value) {
+      return value.toLocaleString('es-ES', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }) + ' USDT';
+    }
+
+    function formatSignedUsdt(value) {
+      const sign = value > 0 ? '+' : value < 0 ? '-' : '';
+      return sign + Math.abs(value).toLocaleString('es-ES', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }) + ' USDT';
+    }
+
+    function formatSignedPercent(value) {
+      const sign = value > 0 ? '+' : value < 0 ? '-' : '';
+      return sign + Math.abs(value).toLocaleString('es-ES', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }) + '%';
+    }
+
+    function formatBtcAmount(value) {
+      return value.toLocaleString('es-ES', {
+        minimumFractionDigits: 8,
+        maximumFractionDigits: 8
+      }) + ' BTC';
+    }
+
+    function setSignedValue(element, value, formatter) {
+      element.textContent = formatter(value);
+      element.className = 'result-value';
+      if (value > 0) {
+        element.classList.add('positive');
+      } else if (value < 0) {
+        element.classList.add('negative');
+      }
+    }
+
+    function hideWarning() {
+      saleWarningOutput.style.display = 'none';
+      saleWarningOutput.textContent = '';
+    }
+
+    function showWarning(message) {
+      saleWarningOutput.textContent = message;
+      saleWarningOutput.style.display = 'block';
+    }
+
+    function resetSaleResults() {
+      finalUsdtOutput.textContent = '—';
+      profitOutput.textContent = '—';
+      profitOutput.className = 'result-value';
+      returnOutput.textContent = '—';
+      returnOutput.className = 'result-value';
+      priceChangeOutput.textContent = '—';
+      priceChangeOutput.className = 'result-value';
+      saleContextOutput.textContent = 'El beneficio se calcula sobre el coste de adquisición del BTC que vas a vender.';
+      shareBtn.disabled = true;
+      tradeData = null;
+    }
+
+    function syncSellAmount(btcObtained) {
+      const currentSellAmount = parseFloat(btcToSellInput.value) || 0;
+      const shouldAutoFill = !btcSellManuallyEdited || !currentSellAmount || nearlyEqual(currentSellAmount, previousBtcObtained);
+      if (shouldAutoFill) {
+        btcToSellInput.value = btcObtained > 0 ? btcObtained.toFixed(8) : '';
+        btcSellManuallyEdited = false;
+      }
+      previousBtcObtained = btcObtained;
+    }
+
+    function calculateTrade(options = {}) {
+      const syncSell = options.syncSell || false;
+      hideWarning();
+
+      const invested = parseFloat(usdtInvestedInput.value) || 0;
+      const buyPrice = parseFloat(buyPriceInput.value) || 0;
+      const sellPrice = parseFloat(sellPriceInput.value) || 0;
+      const btcObtained = invested > 0 && buyPrice > 0 ? invested / buyPrice : 0;
+
+      btcObtainedOutput.textContent = btcObtained > 0 ? formatBtcAmount(btcObtained) : '—';
+      btcAvailableOutput.textContent = btcObtained > 0 ? formatBtcAmount(btcObtained) : '—';
+      btcToSellInput.max = btcObtained > 0 ? btcObtained.toFixed(8) : '';
+      sellAllBtn.disabled = btcObtained <= 0;
+
+      if (syncSell) {
+        syncSellAmount(btcObtained);
+      }
+
+      let btcToSell = parseFloat(btcToSellInput.value) || 0;
+      if (btcObtained > 0 && btcToSell > btcObtained) {
+        btcToSell = btcObtained;
+        btcToSellInput.value = btcObtained.toFixed(8);
+        btcSellManuallyEdited = false;
+        showWarning('No puedes vender más BTC del que has obtenido. He ajustado el valor al máximo disponible.');
+      }
+
+      if (!(btcObtained > 0) || !(btcToSell > 0) || !(sellPrice > 0)) {
+        resetSaleResults();
+        return;
+      }
+
+      const soldCostBasis = btcToSell * buyPrice;
+      const finalUsdt = btcToSell * sellPrice;
+      const profit = finalUsdt - soldCostBasis;
+      const returnPct = soldCostBasis > 0 ? (profit / soldCostBasis) * 100 : 0;
+      const priceChangePct = buyPrice > 0 ? ((sellPrice / buyPrice) - 1) * 100 : 0;
+      const remainingBtc = Math.max(0, btcObtained - btcToSell);
+
+      finalUsdtOutput.textContent = formatUsdt(finalUsdt);
+      profitOutput.textContent = formatSignedUsdt(profit);
+      returnOutput.textContent = formatSignedPercent(returnPct);
+      priceChangeOutput.textContent = formatSignedPercent(priceChangePct);
+
+      setSignedValue(profitOutput, profit, formatSignedUsdt);
+      setSignedValue(returnOutput, returnPct, formatSignedPercent);
+      setSignedValue(priceChangeOutput, priceChangePct, formatSignedPercent);
+
+      saleContextOutput.textContent = `Coste del BTC vendido: ${formatUsdt(soldCostBasis)} · BTC restantes: ${formatBtcAmount(remainingBtc)}`;
+
+      tradeData = {
+        invested,
+        buyPrice,
+        btcObtained,
+        btcToSell,
+        sellPrice,
+        finalUsdt,
+        profit,
+        returnPct
+      };
+      shareBtn.disabled = false;
+    }
+
+    function shareTrade() {
+      if (!tradeData) return;
+      const text = `Si compro #Bitcoin con ${formatUsdt(tradeData.invested)} a ${formatUsdt(tradeData.buyPrice)} por BTC y vendo ${formatBtcAmount(tradeData.btcToSell)} a ${formatUsdt(tradeData.sellPrice)}, obtengo ${formatUsdt(tradeData.finalUsdt)} (${formatSignedPercent(tradeData.returnPct)})\n\nCalculadora:`;
+      shareOnTwitter(text, 'https://bitcoincalculadora.com/calculadora-compra-venta/');
+    }
+
+    usdtInvestedInput.addEventListener('input', () => calculateTrade({ syncSell: true }));
+    buyPriceInput.addEventListener('input', () => calculateTrade({ syncSell: true }));
+    sellPriceInput.addEventListener('input', () => calculateTrade());
+    btcToSellInput.addEventListener('input', () => {
+      btcSellManuallyEdited = true;
+      calculateTrade();
+    });
+    sellAllBtn.addEventListener('click', () => {
+      btcSellManuallyEdited = false;
+      calculateTrade({ syncSell: true });
+    });
+    shareBtn.addEventListener('click', shareTrade);
+
+    calculateTrade({ syncSell: true });
+    initPriceUpdates();
+  </script>
+
+</body>
+</html>
