@@ -52,7 +52,8 @@ body {
 .nav-top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 12px;
   padding: 10px 0;
 }
 .nav-brand {
@@ -61,11 +62,33 @@ body {
   gap: 10px;
   text-decoration: none;
   color: var(--text);
+  min-width: 0;
 }
 .nav-brand:hover { color: var(--accent); }
 .nav-brand .btc-logo { width: 28px; height: 28px; }
 .nav-brand span { font-size: 1.5rem; font-weight: 500; }
 .nav-subtitle { font-size: 0.75rem; color: var(--text-secondary); }
+.nav-donate-btn {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: var(--accent-dim);
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+.nav-donate-btn:hover {
+  background: rgba(247, 147, 26, 0.22);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
 .nav-hamburger {
   display: none;
   background: none;
@@ -158,6 +181,102 @@ footer { margin-top: 64px; padding-top: 32px; border-top: 1px solid var(--border
 footer p { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.8; }
 footer a { color: var(--accent); text-decoration: none; }
 footer a:hover { text-decoration: underline; }
+.donation-footer {
+  margin-bottom: 24px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(247, 147, 26, 0.12), rgba(247, 147, 26, 0.04));
+  text-align: left;
+}
+.donation-footer-kicker {
+  margin-bottom: 10px;
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.donation-footer h2 {
+  margin-bottom: 8px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text);
+}
+.donation-footer-text {
+  margin-bottom: 18px;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.donation-footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.donation-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(20, 20, 20, 0.35);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+.donation-btn:hover {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+}
+.donation-btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #141414;
+  font-weight: 600;
+}
+.donation-btn-primary:hover {
+  background: #ffab45;
+  border-color: #ffab45;
+  color: #141414;
+}
+.donation-method-list {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.donation-method {
+  padding: 12px 14px;
+  background: rgba(20, 20, 20, 0.5);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.donation-method-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.donation-method code {
+  display: block;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.8125rem;
+  color: var(--text);
+  word-break: break-all;
+}
+.donation-footer-note {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
 
 .nav-calculadoras {
   display: flex;
@@ -216,6 +335,11 @@ footer a:hover { text-decoration: underline; }
   .nav-hamburger { display: block; }
   .nav-subtitle { display: none; }
   .container { padding: 72px 20px 60px; }
+  .nav-brand span { font-size: 1.25rem; }
+  .nav-donate-btn {
+    padding: 7px 12px;
+    font-size: 0.75rem;
+  }
 
   .nav-calculadoras {
     display: none;
@@ -242,4 +366,7 @@ footer a:hover { text-decoration: underline; }
   .cta-link { max-width: 100%; }
   .projection-amount { font-size: 1.75rem; }
   .hero-text h2 { font-size: 1.25rem; }
+  .donation-footer { padding: 20px; }
+  .donation-footer-actions { flex-direction: column; }
+  .donation-btn { width: 100%; }
 }
